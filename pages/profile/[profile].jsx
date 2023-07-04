@@ -4,9 +4,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import Image from 'next/image';
 import UserId from '../../components/userId';
 import Head from 'next/head';
-import Meta from '../../components/Meta';
-import { Storage } from "@aws-amplify/storage"
-import axios from 'axios';
+import Meta from '../../components/Meta'; 
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { addDoc, collection, db, doc, getDocs, query, storage, updateDoc, where } from '../../components/firebase';
 import { toast } from 'react-toastify';

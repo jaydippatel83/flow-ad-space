@@ -48,11 +48,7 @@ const Collection_category_filter = () => {
 		{
 			id: 3,
 			text: 'Flow',
-		},
-		{
-			id: 4,
-			text: 'Tezos',
-		},
+		} 
 	];
 	const categoryText = [
 		{
@@ -66,15 +62,7 @@ const Collection_category_filter = () => {
 		{
 			id: 3,
 			text: 'Collectibles',
-		},
-		{
-			id: 4,
-			text: 'Domain',
-		},
-		{
-			id: 5,
-			text: 'Music',
-		},
+		}, 
 		{
 			id: 6,
 			text: 'Photography',
@@ -356,23 +344,7 @@ const Collection_category_filter = () => {
 									>
 										Collectibles
 									</a>
-								</li>
-								<li>
-									<a
-										href="#"
-										className="dropdown-item font-display dark:hover:bg-jacarta-600 hover:bg-jacarta-50 flex w-full items-center rounded-xl px-5 py-2 text-left text-sm transition-colors dark:text-white"
-									>
-										Domain
-									</a>
-								</li>
-								<li>
-									<a
-										href="#"
-										className="dropdown-item font-display dark:hover:bg-jacarta-600 hover:bg-jacarta-50 flex w-full items-center rounded-xl px-5 py-2 text-left text-sm transition-colors dark:text-white"
-									>
-										Music
-									</a>
-								</li>
+								</li> 
 								<li>
 									<a
 										href="#"

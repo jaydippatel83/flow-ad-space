@@ -13,17 +13,7 @@ const tranding_category_filter = [
     id: 2,
     svg: "collection",
     text: "Collectibles",
-  },
-  {
-    id: 3,
-    svg: "domain",
-    text: "domain",
-  },
-  {
-    id: 4,
-    svg: "music",
-    text: "music",
-  },
+  }, 
   {
     id: 5,
     svg: "photography",

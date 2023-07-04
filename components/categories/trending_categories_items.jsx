@@ -102,12 +102,8 @@ const Trending_categories_items = () => {
               );
             }
           })}
-        </ul>
-        {/* dropdown */}
-        <Recently_added_dropdown data={sortText} dropdownFor="recently_added" />
-      </div>
-
-      {/* <!-- Grid --> */}
+        </ul> 
+      </div> 
       <CategoryItem />
     </>
   );

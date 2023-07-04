@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import Activity_item from "../collectrions/Activity_item";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs"; 
 import Image from "next/image";
-import Trending_categories_items from "../categories/trending_categories_items";
-import Explore_collection_item from "../collectrions/explore_collection_item";
+import Trending_categories_items from "../categories/trending_categories_items"; 
 
 const User_items = () => {
   const [itemActive, setItemActive] = useState(1);
@@ -22,17 +20,7 @@ const User_items = () => {
       id: 3,
       text: "created(20)",
       icon: "created",
-    },
-    {
-      id: 4,
-      text: "collections",
-      icon: "listing",
-    },
-    {
-      id: 5,
-      text: "Activity",
-      icon: "activity",
-    },
+    } 
   ];
   return (
     <>
@@ -94,18 +82,7 @@ const User_items = () => {
                 {/* <!-- Filter --> */}
                 <Trending_categories_items />
               </div>
-            </TabPanel>
-            <TabPanel>
-              {/* <!-- Grid --> */}
-              <div className="grid grid-cols-1 gap-[1.875rem] md:grid-cols-3 lg:grid-cols-4">
-                <Explore_collection_item itemFor="userPage" />
-              </div>
-            </TabPanel>
-            <TabPanel>
-              <div>
-                <Activity_item />
-              </div>
-            </TabPanel>
+            </TabPanel> 
           </Tabs>
         </div>
       </section>
