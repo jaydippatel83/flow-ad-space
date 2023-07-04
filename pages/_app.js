@@ -11,6 +11,9 @@ import { useRef } from "react";
 import * as fcl from "@onflow/fcl";
 // import { Amplify, API } from 'aws-amplify';
 // import awsmobile from '../src/aws-exports';
+import { ToastContainer } from "react-toastify";
+import { AuthContextProvider } from "../context/AuthConext";
+import "react-toastify/dist/ReactToastify.css";
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
@@ -36,7 +39,9 @@ function MyApp({ Component, pageProps }) {
     <>
       <Meta title="Home" />
       <Provider store={store}>
+        <ToastContainer/>
         <ThemeProvider enableSystem={true} attribute="class">
+          <AuthContextProvider>
           <MetaMaskProvider>
             <UserContext.Provider value={{ scrollRef: scrollRef }}>
               {pid === "/login" ? (
@@ -48,6 +53,7 @@ function MyApp({ Component, pageProps }) {
               )}
             </UserContext.Provider>
           </MetaMaskProvider>
+          </AuthContextProvider>
         </ThemeProvider>
       </Provider>
     </>

@@ -7,28 +7,19 @@ import { useRouter } from "next/router";
 import {
   isParentPageActive,
 } from "../../utils/daynamicNavigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as fcl from "@onflow/fcl";
 import UserProfile from "./UserProfile";
+import { AuthContext } from "../../context/AuthConext";
 
 export default function Header04() {
+  const authContext = useContext(AuthContext)
+  const {user,login} = authContext;
   const [toggle, setToggle] = useState(false);
   const [isScroll, setScroll] = useState(false);
-  const [user, setUser] = useState();
 
-
-  useEffect(() => {
-    fcl.currentUser().subscribe(setUser);
-  }, [])
-
-  const login = () => {
-    fcl.authenticate();
-  }
-
-  const logout = () => {
-
-  }
-
+ 
+ 
   // sticky menu
   useEffect(() => {
     window.addEventListener("scroll", () => {

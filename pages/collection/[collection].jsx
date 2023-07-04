@@ -20,7 +20,7 @@ const Collection = () => {
 		} else {
 			setLikesImage(false);
 		}
-	};
+	}; 
 
 	return (
 		<>
