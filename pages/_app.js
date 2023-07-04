@@ -3,8 +3,7 @@ import { ThemeProvider } from "next-themes";
 import Layout from "../components/layout";
 import { Provider } from "react-redux";
 import { store } from "../redux/store";
-import { useRouter } from "next/router";
-import { MetaMaskProvider } from "metamask-react";
+import { useRouter } from "next/router"; 
 import Meta from "../components/Meta";
 import UserContext from "../components/UserContext";
 import { useRef } from "react";
@@ -41,8 +40,7 @@ function MyApp({ Component, pageProps }) {
       <Provider store={store}>
         <ToastContainer/>
         <ThemeProvider enableSystem={true} attribute="class">
-          <AuthContextProvider>
-          <MetaMaskProvider>
+          <AuthContextProvider> 
             <UserContext.Provider value={{ scrollRef: scrollRef }}>
               {pid === "/login" ? (
                 <Component {...pageProps} />
@@ -51,8 +49,7 @@ function MyApp({ Component, pageProps }) {
                   <Component {...pageProps} />
                 </Layout>
               )}
-            </UserContext.Provider>
-          </MetaMaskProvider>
+            </UserContext.Provider> 
           </AuthContextProvider>
         </ThemeProvider>
       </Provider>

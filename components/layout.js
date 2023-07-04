@@ -1,5 +1,4 @@
-import Footer from "./footer";
-import Wallet_modal from "./modal/wallet_modal";
+import Footer from "./footer"; 
 import BidsModal from "./modal/bidsModal";
 import BuyModal from "./modal/buyModal";
 import { useRouter } from "next/router"; 
@@ -9,8 +8,7 @@ export default function Layout({ children }) {
   const route = useRouter(); 
   return (
     <>
-      <Header04 />
-      <Wallet_modal />
+      <Header04 /> 
       <BidsModal />
       <BuyModal />
       <main>{children}</main>

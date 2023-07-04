@@ -24,12 +24,10 @@ const Bids = ({ classes = "pt-10 pb-24", bgWhite }) => {
           classes="font-display text-jacarta-700 mb-8 text-center text-3xl dark:text-white"
         />
 
-        <div className="relative">
-          {/* <!-- Slider --> */}
-          <BidsCarousel />
+        <div className="relative"> 
+          {/* <BidsCarousel /> */}
         </div>
-      </div>
-      {/* <!-- end hot bids --> */}
+      </div> 
     </section>
   );
 };
