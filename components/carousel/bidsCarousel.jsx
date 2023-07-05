@@ -103,7 +103,7 @@ const BidsCarousel = () => {
                       Current Bid
                     </span>
                     <span className="dark:text-jacarta-100 text-jacarta-700">
-                      {bid_number} FLOWW
+                      {bid_number} FLOW
                     </span>
                   </div>
 

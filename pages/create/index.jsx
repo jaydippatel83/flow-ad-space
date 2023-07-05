@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css"; // optional
-import Collection_dropdown2 from "../../components/dropdown/collection_dropdown2";
-import {
-  collectionDropdown2_data,
-  EthereumDropdown2_data,
-} from "../../data/dropdown";
+import "tippy.js/dist/tippy.css"; // optional 
 import { FileUploader } from "react-drag-drop-files";
-import Proparties_modal from "../../components/modal/proparties_modal";
 import { useDispatch } from "react-redux";
-import { showPropatiesModal } from "../../redux/counterSlice";
 import Meta from "../../components/Meta";
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from "@mui/x-date-pickers";
+import { NFTStorage, File } from 'nft.storage'
+import Link from "next/link";
+import Image from "next/image";
+import moment from "moment";
 
 const Create = () => {
   const fileTypes = [
@@ -27,33 +28,41 @@ const Create = () => {
     "GLTF",
   ];
   const [file, setFile] = useState("");
+  const [startDate, setStartDate] = React.useState(dayjs(new Date()));
+  const [endDate, setEndDate] = React.useState(dayjs(new Date()));
+  const [nftname, setNftName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setpPrice] = useState(1);
+  const [loading, setLoading]= useState(false);
 
-  const dispatch = useDispatch();
+  const NFT_STORAGE_KEY = process.env.NEXT_APP_NFT_STORAGE_KEY;
 
-  const handleChange = (file) => {
-    setFile(file.name);
+  const handleChange = async (file) => {
+    setLoading(true);
+    const filename = file.name;
+    const img = new File([file], file.name, { type: file.type })
+    const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
+    const res = await nftstorage.store({
+      image: img,
+      name: filename,
+      description: filename,
+    })
+    const url = res.data.image.href.replace(
+      "ipfs://",
+      "https://nftstorage.link/ipfs/"
+    ) 
+    setFile(url)
+    setLoading(false);
   };
+  const handleStartDateChange = (newValue) => { 
+    setStartDate(newValue);
+  };
+  
+  const handleEndDateChange = (newValue) => { 
+    setEndDate(newValue);
+  }; 
 
-  const popupItemData = [
-    {
-      id: 1,
-      name: "proparties",
-      text: "Textual traits that show up as rectangles.",
-      icon: "proparties-icon",
-    },
-    {
-      id: 2,
-      name: "levels",
-      text: "Numerical traits that show as a progress bar.",
-      icon: "level-icon",
-    },
-    {
-      id: 3,
-      name: "stats",
-      text: "Numerical traits that just show as numbers.",
-      icon: "stats-icon",
-    },
-  ];
+
   return (
     <div>
       <Meta title="Create" />
@@ -71,413 +80,207 @@ const Create = () => {
             Create
           </h1>
 
-          <div className="mx-auto max-w-[48.125rem]">
-            {/* <!-- File Upload --> */}
-            <div className="mb-6">
-              <label className="font-display text-jacarta-700 mb-2 block dark:text-white">
-                Image, Video, Audio, or 3D Model
-                <span className="text-red">*</span>
-              </label>
-
-              {file ? (
-                <p className="dark:text-jacarta-300 text-2xs mb-3">
-                  successfully uploaded : {file}
-                </p>
-              ) : (
-                <p className="dark:text-jacarta-300 text-2xs mb-3">
-                  Drag or choose your file to upload
-                </p>
-              )}
-
-              <div className="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 group relative flex max-w-3xl flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white py-20 px-5 text-center">
-                <div className="relative z-10 cursor-pointer">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    className="fill-jacarta-500 mb-4 inline-block dark:fill-white"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M16 13l6.964 4.062-2.973.85 2.125 3.681-1.732 1-2.125-3.68-2.223 2.15L16 13zm-2-7h2v2h5a1 1 0 0 1 1 1v4h-2v-3H10v10h4v2H9a1 1 0 0 1-1-1v-5H6v-2h2V9a1 1 0 0 1 1-1h5V6zM4 14v2H2v-2h2zm0-4v2H2v-2h2zm0-4v2H2V6h2zm0-4v2H2V2h2zm4 0v2H6V2h2zm4 0v2h-2V2h2zm4 0v2h-2V2h2z" />
-                  </svg>
-                  <p className="dark:text-jacarta-300 mx-auto max-w-xs text-xs">
-                    JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max
-                    size: 100 MB
-                  </p>
-                </div>
-                <div className="dark:bg-jacarta-600 bg-jacarta-50 absolute inset-4 cursor-pointer rounded opacity-0 group-hover:opacity-100 ">
-                  <FileUploader
-                    handleChange={handleChange}
-                    name="file"
-                    types={fileTypes}
-                    classes="file-drag"
-                    maxSize={100}
-                    minSize={0}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* <!-- Name --> */}
-            <div className="mb-6">
-              <label
-                htmlFor="item-name"
-                className="font-display text-jacarta-700 mb-2 block dark:text-white"
-              >
-                Name<span className="text-red">*</span>
-              </label>
-              <input
-                type="text"
-                id="item-name"
-                className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
-                placeholder="Item name"
-                required
-              />
-            </div>
-
-            {/* <!-- External Link --> */}
-            <div className="mb-6">
-              <label
-                htmlFor="item-external-link"
-                className="font-display text-jacarta-700 mb-2 block dark:text-white"
-              >
-                External link
-              </label>
-              <p className="dark:text-jacarta-300 text-2xs mb-3">
-                We will include a link to this URL on this {"item's"} detail
-                page, so that users can click to learn more about it. You are
-                welcome to link to your own webpage with more details.
-              </p>
-              <input
-                type="url"
-                id="item-external-link"
-                className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
-                placeholder="https://yoursite.io/item/123"
-              />
-            </div>
-
-            {/* <!-- Description --> */}
-            <div className="mb-6">
-              <label
-                htmlFor="item-description"
-                className="font-display text-jacarta-700 mb-2 block dark:text-white"
-              >
-                Description
-              </label>
-              <p className="dark:text-jacarta-300 text-2xs mb-3">
-                The description will be included on the {"item's"} detail page
-                underneath its image. Markdown syntax is supported.
-              </p>
-              <textarea
-                id="item-description"
-                className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
-                rows="4"
-                required
-                placeholder="Provide a detailed description of your item."
-              ></textarea>
-            </div>
-
-            {/* <!-- Collection --> */}
-            <div className="relative">
-              <div>
+          <div className="flex flex-wrap">
+            <div className="mx-auto max-w-[48.125rem]">
+              {/* <!-- File Upload --> */}
+              <div className="mb-6">
                 <label className="font-display text-jacarta-700 mb-2 block dark:text-white">
-                  Collection
+                JPG, PNG, GIF, SVG
+                  <span className="text-red">*</span>
                 </label>
-                <div className="mb-3 flex items-center space-x-2">
-                  <p className="dark:text-jacarta-300 text-2xs">
-                    This is the collection where your item will appear.
-                    <Tippy
-                      theme="tomato-theme"
-                      content={
-                        <span>
-                          Moving items to a different collection may take up to
-                          30 minutes.
-                        </span>
-                      }
-                    >
-                      <span className="inline-block">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          width="24"
-                          height="24"
-                          className="dark:fill-jacarta-300 fill-jacarta-500 ml-1 -mb-[3px] h-4 w-4"
-                        >
-                          <path fill="none" d="M0 0h24v24H0z"></path>
-                          <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
-                        </svg>
-                      </span>
-                    </Tippy>
+
+                {file ? (
+                  <p className="dark:text-jacarta-300 text-2xs mb-3">
+                   {loading ? "File Uploading...!" :  `successfully uploaded : ${file}`}
                   </p>
-                </div>
-              </div>
+                ) : (
+                  <p className="dark:text-jacarta-300 text-2xs mb-3">
+                    Drag or choose your file to upload
+                  </p>
+                )}
 
-              {/* dropdown */}
-              <div className="dropdown my-1 cursor-pointer">
-                <Collection_dropdown2
-                  data={collectionDropdown2_data}
-                  collection={true}
-                />
-              </div>
-            </div>
-
-            {/* <!-- Properties --> */}
-            {popupItemData.map(({ id, name, text, icon }) => {
-              return (
-                <div
-                  key={id}
-                  className="dark:border-jacarta-600 border-jacarta-100 relative border-b py-6"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex">
-                      <svg className="icon fill-jacarta-700 mr-2 mt-px h-4 w-4 shrink-0 dark:fill-white">
-                        <use xlinkHref={`/icons.svg#icon-${icon}`}></use>
-                      </svg>
-
-                      <div>
-                        <label className="font-display text-jacarta-700 block dark:text-white">
-                          {name}
-                        </label>
-                        <p className="dark:text-jacarta-300">{text}</p>
-                      </div>
-                    </div>
-                    <button
-                      className="group dark:bg-jacarta-700 hover:bg-accent border-accent flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border bg-white hover:border-transparent"
-                      onClick={() => dispatch(showPropatiesModal())}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
-                        className="fill-accent group-hover:fill-white"
-                      >
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-
-            <Proparties_modal />
-
-            {/* <!-- Properties --> */}
-
-            {/* <!-- Unlockable Content --> */}
-            <div className="dark:border-jacarta-600 border-jacarta-100 relative border-b py-6">
-              <div className="flex items-center justify-between">
-                <div className="flex">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    className="fill-accent mr-2 mt-px h-4 w-4 shrink-0"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M7 10h13a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h1V9a7 7 0 0 1 13.262-3.131l-1.789.894A5 5 0 0 0 7 9v1zm-2 2v8h14v-8H5zm5 3h4v2h-4v-2z" />
-                  </svg>
-
-                  <div>
-                    <label className="font-display text-jacarta-700 block dark:text-white">
-                      Unlockable Content
-                    </label>
-                    <p className="dark:text-jacarta-300">
-                      Include unlockable content that can only be revealed by
-                      the owner of the item.
-                    </p>
-                  </div>
-                </div>
-                <input
-                  type="checkbox"
-                  value="checkbox"
-                  name="check"
-                  className="checked:bg-accent checked:focus:bg-accent checked:hover:bg-accent after:bg-jacarta-400 bg-jacarta-100 relative h-6 w-[2.625rem] cursor-pointer appearance-none rounded-full border-none after:absolute after:top-[0.1875rem] after:left-[0.1875rem] after:h-[1.125rem] after:w-[1.125rem] after:rounded-full after:transition-all checked:bg-none checked:after:left-[1.3125rem] checked:after:bg-white focus:ring-transparent focus:ring-offset-0"
-                />
-              </div>
-            </div>
-
-            {/* <!-- Explicit & Sensitive Content --> */}
-            <div className="dark:border-jacarta-600 border-jacarta-100 relative mb-6 border-b py-6">
-              <div className="flex items-center justify-between">
-                <div className="flex">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    width="24"
-                    height="24"
-                    className="fill-jacarta-700 mr-2 mt-px h-4 w-4 shrink-0 dark:fill-white"
-                  >
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M12.866 3l9.526 16.5a1 1 0 0 1-.866 1.5H2.474a1 1 0 0 1-.866-1.5L11.134 3a1 1 0 0 1 1.732 0zM11 16v2h2v-2h-2zm0-7v5h2V9h-2z" />
-                  </svg>
-
-                  <div>
-                    <label className="font-display text-jacarta-700 dark:text-white">
-                      Explicit & Sensitive Content
-                    </label>
-
-                    <p className="dark:text-jacarta-300">
-                      Set this item as explicit and sensitive content.
-                      <Tippy
-                        content={
-                          <span>
-                            Setting your asset as explicit and sensitive
-                            content, like pornography and other not safe for
-                            work (NSFW) content, will protect users with safe
-                            search while browsing Xhibiter
-                          </span>
-                        }
-                      >
-                        <span className="inline-block">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                            className="dark:fill-jacarta-300 fill-jacarta-500 ml-2 -mb-[2px] h-4 w-4"
-                          >
-                            <path fill="none" d="M0 0h24v24H0z"></path>
-                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
-                          </svg>
-                        </span>
-                      </Tippy>
-                    </p>
-                  </div>
-                </div>
-                <input
-                  type="checkbox"
-                  value="checkbox"
-                  name="check"
-                  className="checked:bg-accent checked:focus:bg-accent checked:hover:bg-accent after:bg-jacarta-400 bg-jacarta-100 relative h-6 w-[2.625rem] cursor-pointer appearance-none rounded-full border-none after:absolute after:top-[0.1875rem] after:left-[0.1875rem] after:h-[1.125rem] after:w-[1.125rem] after:rounded-full after:transition-all checked:bg-none checked:after:left-[1.3125rem] checked:after:bg-white focus:ring-transparent focus:ring-offset-0"
-                />
-              </div>
-            </div>
-
-            {/* <!-- Supply --> */}
-            <div className="mb-6">
-              <label
-                htmlFor="item-supply"
-                className="font-display text-jacarta-700 mb-2 block dark:text-white"
-              >
-                Supply
-              </label>
-
-              <div className="mb-3 flex items-center space-x-2">
-                <p className="dark:text-jacarta-300 text-2xs">
-                  The number of items that can be minted. No gas cost to you!
-                  <Tippy
-                    content={
-                      <span>
-                        Setting your asset as explicit and sensitive content,
-                        like pornography and other not safe for work (NSFW)
-                        content, will protect users with safe search while
-                        browsing Xhibiter.
-                      </span>
-                    }
-                  >
-                    <span className="inline-block">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
-                        className="dark:fill-jacarta-300 fill-jacarta-500 ml-1 -mb-[3px] h-4 w-4"
-                      >
-                        <path fill="none" d="M0 0h24v24H0z"></path>
-                        <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
-                      </svg>
-                    </span>
-                  </Tippy>
-                </p>
-              </div>
-
-              <input
-                type="text"
-                id="item-supply"
-                className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
-                placeholder="1"
-              />
-            </div>
-
-            {/* <!-- Blockchain --> */}
-            <div className="mb-6">
-              <label
-                htmlFor="item-supply"
-                className="font-display text-jacarta-700 mb-2 block dark:text-white"
-              >
-                Blockchain
-              </label>
-
-              {/* dropdown */}
-              <div className="dropdown relative mb-4 cursor-pointer ">
-                <Collection_dropdown2 data={EthereumDropdown2_data} />
-              </div>
-            </div>
-
-            {/* <!-- Freeze metadata --> */}
-            <div className="mb-6">
-              <div className="mb-2 flex items-center space-x-2">
-                <label
-                  htmlFor="item-freeze-metadata"
-                  className="font-display text-jacarta-700 block dark:text-white"
-                >
-                  Freeze metadata
-                </label>
-
-                <Tippy
-                  content={
-                    <span className="bg-jacarta-300">
-                      Setting your asset as explicit and sensitive content, like
-                      pornography and other not safe for work (NSFW) content,
-                      will protect users with safe search while browsing
-                      Xhibiter.
-                    </span>
-                  }
-                >
-                  <span className="inline-block">
+                <div className="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 group relative flex max-w-3xl flex-col items-center justify-center rounded-lg border-2 border-dashed bg-white py-20 px-5 text-center">
+                  <div className="relative z-10 cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       width="24"
                       height="24"
-                      className="dark:fill-jacarta-300 fill-jacarta-500 mb-[2px] h-5 w-5"
+                      className="fill-jacarta-500 mb-4 inline-block dark:fill-white"
                     >
-                      <path fill="none" d="M0 0h24v24H0z"></path>
-                      <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM11 7h2v2h-2V7zm0 4h2v6h-2v-6z"></path>
+                      <path fill="none" d="M0 0h24v24H0z" />
+                      <path d="M16 13l6.964 4.062-2.973.85 2.125 3.681-1.732 1-2.125-3.68-2.223 2.15L16 13zm-2-7h2v2h5a1 1 0 0 1 1 1v4h-2v-3H10v10h4v2H9a1 1 0 0 1-1-1v-5H6v-2h2V9a1 1 0 0 1 1-1h5V6zM4 14v2H2v-2h2zm0-4v2H2v-2h2zm0-4v2H2V6h2zm0-4v2H2V2h2zm4 0v2H6V2h2zm4 0v2h-2V2h2zm4 0v2h-2V2h2z" />
                     </svg>
-                  </span>
-                </Tippy>
+                    <p className="dark:text-jacarta-300 mx-auto max-w-xs text-xs">
+                      JPG, PNG, GIF, SVG. Max
+                      size: 20 MB
+                    </p>
+                  </div>
+                  <div className="dark:bg-jacarta-600 bg-jacarta-50 absolute inset-4 cursor-pointer rounded opacity-0 group-hover:opacity-100 ">
+                    <FileUploader
+                      handleChange={handleChange}
+                      name="file"
+                      types={fileTypes}
+                      classes="file-drag"
+                      maxSize={100}
+                      minSize={0}
+                    />
+                  </div>
+                </div>
               </div>
 
-              <p className="dark:text-jacarta-300 text-2xs mb-3">
-                Freezing your metadata will allow you to permanently lock and
-                store all of this
-                {"item's"} content in decentralized file storage.
-              </p>
+              {/* <!-- Name --> */}
+              <div className="mb-6">
+                <label
+                  htmlFor="item-name"
+                  className="font-display text-jacarta-700 mb-2 block dark:text-white"
+                >
+                  Name<span className="text-red">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="item-name"
+                  className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
+                  placeholder="Item name"
+                  required
+                  onChange={(e) => setNftName(e.target.value)}
+                />
+              </div>
 
-              <input
-                type="text"
-                disabled
-                id="item-freeze-metadata"
-                className="dark:bg-jacarta-700 bg-jacarta-50 border-jacarta-100 dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 dark:text-white"
-                placeholder="To freeze your metadata, you must create your item first."
-              />
+              <div className="flex flex-wrap">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <div className="mb-6 mr-2">
+                    <label
+                      htmlFor="item-name"
+                      className="font-display text-jacarta-700 mb-2 block dark:text-white"
+                    >
+                      Start Time<span className="text-red">*</span>
+                    </label>
+                    <DatePicker
+                      id="start-date"
+                      label="Start Date"
+                      value={startDate}
+                      onChange={handleStartDateChange}
+                    />
+
+                  </div>
+                  <div className="mb-6">
+                    <label
+                      htmlFor="item-name"
+                      className="font-display text-jacarta-700 mb-2 block dark:text-white"
+                    >
+                      End Time<span className="text-red">*</span>
+                    </label>
+                    <DatePicker
+                     id="end-date"
+                      label="End Date"
+                      value={endDate}
+                      onChange={handleEndDateChange}
+                    />
+                  </div>
+                </LocalizationProvider>
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="item-name"
+                  className="font-display text-jacarta-700 mb-2 block dark:text-white"
+                >
+                  Price<span className="text-red">*</span>
+                </label>
+                <input
+                  type="number"
+                  onChange={(e) => setpPrice(e.target.value)}
+                  id="item-name"
+                  className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
+                  placeholder="Item name"
+                  required
+                />
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="item-description"
+                  className="font-display text-jacarta-700 mb-2 block dark:text-white"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="item-description"
+                  className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
+                  rows="4"
+                  required
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Provide a detailed description of your item."
+                ></textarea>
+              </div>
+              <button
+                className="bg-accent-lighter hover:bg-accent-dark cursor-pointer rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
+              >
+                Create
+              </button>
+            </div>
+            <div className="mt-6 mx-auto">
+              <label className="font-display text-jacarta-700 mb-2 block dark:text-white">
+                Preview NFT
+              </label>
+              <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg text-jacarta-500">
+
+                <img
+                  src={file ? file : '/images/products/item_1.jpg'}
+                  alt={nftname} 
+                  className="rounded-[0.625rem] w-full h-[240px]"
+                  loading="lazy"
+                />
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="font-display text-jacarta-700 hover:text-accent text-base dark:text-white line-clamp-2 min-w-[100px] max-w-[200px] w-[180px]">
+                    {nftname ? nftname : "NFT name"}
+                  </span>
+                  <span className="dark:border-jacarta-600 border-jacarta-100 flex items-center whitespace-nowrap rounded-md border py-1 px-2">
+                    <Tippy content={<span>FLOW</span>}>
+                      <img
+                        src="/images/chains/flow.png"
+                        alt=""
+                        className="w-3 h-3 mr-1"
+                      />
+                    </Tippy>
+
+                    <span className="text-green text-sm font-medium tracking-tight">
+                      {price} FLOW
+                    </span>
+                  </span>
+                </div>
+                <div className="flex flex-wrap justify-between mt-5">
+                  <div className="flex flex-col mr-2">
+                    <span className="font-display text-jacarta-700 hover:text-accent text-base dark:text-white">
+                      Start Date
+                    </span>
+                    <span className="dark:text-jacarta-300 text-jacarta-500">
+                    {dayjs(startDate).format('LL')}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-display text-jacarta-700 hover:text-accent text-base dark:text-white">
+                      End Date
+                    </span>
+                    <span className="dark:text-jacarta-300 text-jacarta-500">
+                    {dayjs(endDate).format('LL')}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-2 text-sm">
+                  <span className="dark:text-jacarta-300 text-jacarta-500 line-clamp-3 min-w-[200px] max-w-[300px] w-[240px]">
+                    {description ? description : 'Description'}
+                  </span>
+                </div>
+              </div>
             </div>
 
-            {/* <!-- Submit --> */}
-            <button 
-              className="bg-accent-lighter cursor-default rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
-            >
-              Create
-            </button>
           </div>
+
+
         </div>
       </section>
-      {/* <!-- end create --> */}
     </div>
   );
 };
