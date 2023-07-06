@@ -479,12 +479,12 @@ const Recently_added_dropdown = ({ data, dropdownFor }) => {
 		const currencyData = [
 			{
 				id: 1,
-				image: '/images/chains/ETH.png',
-				text: 'ETH',
+				image: '/images/chains/fl.png',
+				text: 'FLOW',
 			},
 			{
 				id: 2,
-				image: '/images/chains/FLOW.png',
+				image: '/images/chains/fl.png',
 				text: 'FLOW',
 			},
 			{
@@ -530,11 +530,11 @@ const Recently_added_dropdown = ({ data, dropdownFor }) => {
 								>
 									<span className="font-display flex items-center">
 										<img
-											src="/images/chains/ETH.png"
-											alt="eth"
+											src="/images/chains/FLOW.png"
+											alt="FLOW"
 											className="mr-2 h-5 w-5 rounded-full"
 										/>
-										ETH
+										FLOW
 									</span>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -563,7 +563,7 @@ const Recently_added_dropdown = ({ data, dropdownFor }) => {
 												onClick={() => setCurrencyDropdown(false)}
 											>
 												<span className="flex items-center">
-													<img src={image} alt="eth" className="mr-2 h-5 w-5 rounded-full" />
+													<img src={image} alt="FLOW" className="mr-2 h-5 w-5 rounded-full" />
 													{text}
 												</span>
 											</button>

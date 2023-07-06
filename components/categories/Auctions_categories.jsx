@@ -23,7 +23,14 @@ const Auctions_categories = () => {
   };
   return (
     <div>
-      <section className="py-24">
+      <section className="py-24 relative">
+      <picture className="pointer-events-none absolute inset-0 -z-10 dark:hidden">
+          <img
+            src="/images/gradient_light.jpg"
+            alt="gradient"
+            className="h-full w-full"
+          />
+        </picture>
         <div className="container">
           <HeadLine
             image="https://cdn.jsdelivr.net/npm/emoji-datasource-apple@7.0.2/img/apple/64/2764-fe0f.png"
@@ -124,15 +131,12 @@ const Auctions_categories = () => {
                       </Link>
                       <span className="dark:border-jacarta-600 border-jacarta-100 flex items-center whitespace-nowrap rounded-md border py-1 px-2">
                         <span>
-                          <Tippy
-                            content={
-                              <span className="py-1 px-2 block">ETH</span>
-                            }
-                          >
-                            <svg className="h-4 w-4">
-                              <use xlinkHref="/icons.svg#icon-ETH"></use>
-                            </svg>
-                          </Tippy>
+                        <img
+																	src="/images/chains/fl.png"
+																	alt="avatar"
+																	className="rounded-2lg mr-1 h-4 w-4"
+																	loading="lazy"
+																/>
                         </span>
                       </span>
                     </div>

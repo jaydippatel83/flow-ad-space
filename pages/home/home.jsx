@@ -16,7 +16,7 @@ const HomePage = () => {
       <Meta title="Home" />
       <Hero_4 />
       <CoverflowCarousel />
-      <Top_collection />
+      {/* <Top_collection /> */}
       <Auctions_categories />  
     </>
   );

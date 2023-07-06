@@ -198,11 +198,11 @@ const DataTable = () => {
               role="cell"
             >
               <span>{item.price}</span>
-              <span title="ETH">
+              <span title="FLOW">
                 <Image
                   width={14}
                   height={14}
-                  src="/images/chains/eth-icon.svg"
+                  src="/images/chains/chains/FLOW.png"
                   alt="items"
                   className="ml-0.5 h-4 w-4"
                 />
@@ -221,11 +221,11 @@ const DataTable = () => {
               role="cell"
             >
               <span>{item.quantity}</span>
-              <span title="ETH">
+              <span title="FLOW">
                 <Image
                   width={14}
                   height={14}
-                  src="/images/chains/eth-icon.svg"
+                  src="/images/chains/chains/FLOW.png"
                   alt="items"
                   className="ml-0.5 h-4 w-4"
                 />

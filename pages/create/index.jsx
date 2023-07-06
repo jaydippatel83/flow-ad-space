@@ -2,16 +2,13 @@ import React, { useState } from "react";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional 
 import { FileUploader } from "react-drag-drop-files";
-import { useDispatch } from "react-redux";
 import Meta from "../../components/Meta";
 import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from "@mui/x-date-pickers";
 import { NFTStorage, File } from 'nft.storage'
-import Link from "next/link";
-import Image from "next/image";
-import moment from "moment";
+import { toast } from "react-toastify";
 
 const Create = () => {
   const fileTypes = [
@@ -33,7 +30,7 @@ const Create = () => {
   const [nftname, setNftName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setpPrice] = useState(1);
-  const [loading, setLoading]= useState(false);
+  const [loading, setLoading] = useState(false);
 
   const NFT_STORAGE_KEY = process.env.NEXT_APP_NFT_STORAGE_KEY;
 
@@ -50,17 +47,21 @@ const Create = () => {
     const url = res.data.image.href.replace(
       "ipfs://",
       "https://nftstorage.link/ipfs/"
-    ) 
+    )
     setFile(url)
     setLoading(false);
   };
-  const handleStartDateChange = (newValue) => { 
+  const handleStartDateChange = (newValue) => {
     setStartDate(newValue);
   };
-  
-  const handleEndDateChange = (newValue) => { 
+
+  const handleEndDateChange = (newValue) => {
     setEndDate(newValue);
-  }; 
+  };
+
+  const handleCreateNFT = async () => {
+    toast.success("Successfully NFT Created!")
+  }
 
 
   return (
@@ -77,7 +78,7 @@ const Create = () => {
         </picture>
         <div className="container">
           <h1 className="font-display text-jacarta-700 py-16 text-center text-4xl font-medium dark:text-white">
-            Create
+            Create NFT
           </h1>
 
           <div className="flex flex-wrap">
@@ -85,13 +86,13 @@ const Create = () => {
               {/* <!-- File Upload --> */}
               <div className="mb-6">
                 <label className="font-display text-jacarta-700 mb-2 block dark:text-white">
-                JPG, PNG, GIF, SVG
+                  JPG, PNG, GIF, SVG
                   <span className="text-red">*</span>
                 </label>
 
                 {file ? (
                   <p className="dark:text-jacarta-300 text-2xs mb-3">
-                   {loading ? "File Uploading...!" :  `successfully uploaded : ${file}`}
+                    {loading ? "File Uploading...!" : `successfully uploaded : ${file}`}
                   </p>
                 ) : (
                   <p className="dark:text-jacarta-300 text-2xs mb-3">
@@ -172,7 +173,7 @@ const Create = () => {
                       End Time<span className="text-red">*</span>
                     </label>
                     <DatePicker
-                     id="end-date"
+                      id="end-date"
                       label="End Date"
                       value={endDate}
                       onChange={handleEndDateChange}
@@ -215,6 +216,7 @@ const Create = () => {
                 ></textarea>
               </div>
               <button
+                onClick={handleCreateNFT}
                 className="bg-accent-lighter hover:bg-accent-dark cursor-pointer rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
               >
                 Create
@@ -228,7 +230,7 @@ const Create = () => {
 
                 <img
                   src={file ? file : '/images/products/item_1.jpg'}
-                  alt={nftname} 
+                  alt={nftname}
                   className="rounded-[0.625rem] w-full h-[240px]"
                   loading="lazy"
                 />
@@ -239,7 +241,7 @@ const Create = () => {
                   <span className="dark:border-jacarta-600 border-jacarta-100 flex items-center whitespace-nowrap rounded-md border py-1 px-2">
                     <Tippy content={<span>FLOW</span>}>
                       <img
-                        src="/images/chains/flow.png"
+                        src="/images/chains/fl.png"
                         alt=""
                         className="w-3 h-3 mr-1"
                       />
@@ -256,7 +258,7 @@ const Create = () => {
                       Start Date
                     </span>
                     <span className="dark:text-jacarta-300 text-jacarta-500">
-                    {dayjs(startDate).format('LL')}
+                      {dayjs(startDate).format('LL')}
                     </span>
                   </div>
                   <div className="flex flex-col">
@@ -264,7 +266,7 @@ const Create = () => {
                       End Date
                     </span>
                     <span className="dark:text-jacarta-300 text-jacarta-500">
-                    {dayjs(endDate).format('LL')}
+                      {dayjs(endDate).format('LL')}
                     </span>
                   </div>
                 </div>

@@ -24,13 +24,13 @@ const Collection = () => {
 
 	return (
 		<>
-			<Meta title={`${pid} || Xhibiter | NFT Marketplace Next.js Template`} />
+			<Meta title={`${pid} || FAN(Flow Ad Network)`} />
 
 			<div className="pt-[5.5rem] lg:pt-24">
 				{/* <!-- Banner --> */}
 				<div className="relative h-[300px]">
 					<Image
-						src="/images/collections/collection_banner.jpg"
+						src="/images/gradient.jpg"
 						alt="banner"
 						layout="fill"
 						objectFit="cover"

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { buyModalHide } from "../../redux/counterSlice"; 
+import { buyModalHide } from "../../redux/counterSlice";
 
 const BuyModal = () => {
   const { buyModal } = useSelector((state) => state.counter);
@@ -84,13 +84,16 @@ const BuyModal = () => {
 
                 <div className="ml-auto">
                   <span className="mb-1 flex items-center whitespace-nowrap">
-                    <span data-tippy-content="ETH">
-                      <svg className="h-4 w-4">
-                        <use xlinkHref="/icons.svg#icon-ETH"></use>
-                      </svg>
+                    <span data-tippy-content="FLOW">
+                      <img
+                        src="/images/chains/fl.png"
+                        alt="avatar"
+                        className="rounded-2lg mr-1 h-4 w-4"
+                        loading="lazy"
+                      />
                     </span>
                     <span className="dark:text-jacarta-100 text-sm font-medium tracking-tight">
-                      1.55 ETH
+                      1.55 FLOW
                     </span>
                   </span>
                   <div className="dark:text-jacarta-300 text-right text-sm">
@@ -106,13 +109,13 @@ const BuyModal = () => {
                 </span>
                 <div className="ml-auto">
                   <span className="flex items-center whitespace-nowrap">
-                    <span data-tippy-content="ETH">
+                    <span data-tippy-content="FLOW">
                       <svg className="h-4 w-4">
-                        <use xlinkHref="/icons.svg#icon-ETH"></use>
+                        <use xlinkHref="/icons.svg#icon-FLOW"></use>
                       </svg>
                     </span>
                     <span className="text-green font-medium tracking-tight">
-                      1.55 ETH
+                      1.55 FLOW
                     </span>
                   </span>
                   <div className="dark:text-jacarta-300 text-right">

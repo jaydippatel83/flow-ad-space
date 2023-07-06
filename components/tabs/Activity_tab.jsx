@@ -120,12 +120,12 @@ const Activity_tab = () => {
 									className="dark:border-jacarta-600 border-jacarta-100 flex w-[17%] items-center whitespace-nowrap border-t py-4 px-4"
 									role="cell"
 								>
-									<span className="-ml-1" data-tippy-content="ETH">
+									<span className="-ml-1" data-tippy-content="FLOW">
 										<svg className="icon mr-1 h-4 w-4">
-											<use xlinkHref="icons.svg#icon-ETH"></use>
+											<use xlinkHref="icons.svg#icon-FLOW"></use>
 										</svg>
 									</span>
-									<span className="text-green text-sm font-medium tracking-tight">{price} ETH</span>
+									<span className="text-green text-sm font-medium tracking-tight">{price} FLOW</span>
 								</div>
 								<div
 									className="dark:border-jacarta-600 border-jacarta-100 flex w-[22%] items-center border-t py-4 px-4"

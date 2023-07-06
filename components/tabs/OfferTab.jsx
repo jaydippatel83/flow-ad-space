@@ -66,13 +66,13 @@ const OfferTab = () => {
 									className="dark:border-jacarta-600 border-jacarta-100 flex items-center whitespace-nowrap border-t py-4 px-4"
 									role="cell"
 								>
-									<span className="-ml-1" data-tippy-content="ETH">
+									<span className="-ml-1" data-tippy-content="FLOW">
 										<svg className="icon mr-1 h-4 w-4">
-											<use xlinkHref="/icons.svg#icon-ETH"></use>
+											<use xlinkHref="/icons.svg#icon-FLOW"></use>
 										</svg>
 									</span>
 									<span className="text-green text-sm font-medium tracking-tight">
-										{ethPrice} ETH
+										{ethPrice} FLOW
 									</span>
 								</div>
 								<div

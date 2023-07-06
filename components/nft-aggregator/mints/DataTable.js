@@ -207,11 +207,11 @@ const DataTable = () => {
           >
             <div className="flex items-center justify-end">
               <span>{item.mint}</span>
-              <span title="ETH">
+              <span title="FLOW">
                 <Image
                   width={14}
                   height={14}
-                  src="/images/chains/eth-icon.svg"
+                  src="/images/chains/fl.png"
                   alt="items"
                   className="ml-0.5 h-3.5 w-3.5"
                 />
@@ -219,11 +219,11 @@ const DataTable = () => {
             </div>
             <div className="flex items-center justify-end">
               <span>{item.floor}</span>
-              <span title="ETH">
+              <span title="FLOW">
                 <Image
                   width={14}
                   height={14}
-                  src="/images/chains/eth-icon.svg"
+                  src="/images/chains/fl.png"
                   alt="items"
                   className="ml-0.5 h-3.5 w-3.5"
                 />

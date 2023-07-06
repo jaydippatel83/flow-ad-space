@@ -15,10 +15,10 @@ import { AuthContext } from "../../context/AuthConext";
 import moment from "moment";
 
 const User = () => {
-  const authContext= useContext(AuthContext);
-  const {user, update, setUpdate,userData}= authContext;
+  const authContext = useContext(AuthContext);
+  const { user, update, setUpdate, userData } = authContext;
   const router = useRouter();
-  const pid = router.query.user; 
+  const pid = router.query.user;
   const [likesImage, setLikesImage] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -36,11 +36,11 @@ const User = () => {
     }, 2000);
   }, [copied]);
 
- 
+
 
   return (
     <>
-      <Meta title="User || Xhibiter | NFT Marketplace Next.js Template" /> 
+      <Meta title="User || FAN(Flow Ad Network)" />
       {user_data
         .filter((item) => item.id === pid)
         .map((item) => {
@@ -95,11 +95,12 @@ const User = () => {
                       {userData ? userData.UserName : ""}
                     </h2>
                     <div className="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 mb-8 inline-flex items-center justify-center rounded-full border bg-white py-1.5 px-4">
-                      <Tippy content="ETH">
-                        <svg className="icon h-4 w-4 mr-1">
-                          <use xlinkHref="/icons.svg#icon-ETH"></use>
-                        </svg>
-                      </Tippy>
+                      <img
+                        src="/images/chains/fl.png"
+                        alt="avatar"
+                        className="rounded-2lg mr-1 h-4 w-4"
+                        loading="lazy"
+                      />
 
                       <Tippy
                         hideOnClick={false}
@@ -119,11 +120,11 @@ const User = () => {
                     </div>
 
                     <p className="dark:text-jacarta-300 mx-auto mb-2 max-w-xl text-lg">
-                      { userData ? userData.Bio : ''}
+                      {userData ? userData.Bio : ''}
                     </p>
                     <span className="text-jacarta-400">
                       Joined {userData ? moment.unix(userData.CreatedAt.seconds).format('LL') : ''}
-                    </span> 
+                    </span>
                   </div>
                 </div>
               </section>

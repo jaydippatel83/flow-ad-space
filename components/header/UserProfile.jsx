@@ -47,9 +47,12 @@ const UserProfile = ({ user }) => {
                         Balance
                     </span>
                     <div className="flex items-center">
-                        <svg className="icon icon-ETH -ml-1 mr-1 h-[1.125rem] w-[1.125rem]">
-                            <use xlinkHref="/icons.svg#icon-ETH" />
-                        </svg>
+                    <img
+																	src="/images/chains/fl.png"
+																	alt="avatar"
+																	className="rounded-2lg mr-1 h-4 w-4"
+																	loading="lazy"
+																/>
                         <span className="text-green text-lg font-bold">
                             {balance} FLOW
                         </span>

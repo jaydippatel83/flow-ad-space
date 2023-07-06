@@ -39,7 +39,7 @@ export const EthereumDropdown2_data = [
 	{
 		id: '0Ethereum',
 		text: 'Ethereum',
-		image: '/images/chains/ETH.png',
+		image: '/images/chains/FLOW.png',
 	},
 	{
 		id: '1Flow',

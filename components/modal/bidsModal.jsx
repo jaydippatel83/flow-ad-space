@@ -49,12 +49,15 @@ const BidsModal = () => {
               <div className="dark:border-jacarta-600 border-jacarta-100 relative mb-2 flex items-center overflow-hidden rounded-lg border">
                 <div className="border-jacarta-100 bg-jacarta-50 flex flex-1 items-center self-stretch border-r px-2">
                   <span>
-                    <svg className="icon icon-ETH mr-1 h-5 w-5">
-                      <use xlinkHref="/icons.svg#icon-ETH"></use>
-                    </svg>
+                  <img
+																	src="/images/chains/fl.png"
+																	alt="avatar"
+																	className="rounded-2lg mr-1 h-4 w-4"
+																	loading="lazy"
+																/>
                   </span>
                   <span className="font-display text-jacarta-700 text-sm">
-                    ETH
+                    FLOW
                   </span>
                 </div>
 
