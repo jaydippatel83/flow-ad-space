@@ -87,7 +87,7 @@ export default function Header04() {
       >
         <div className="flex items-center px-6 py-6 xl:px-24 ">
           <Link className="shrink-0" href="/">
-            <a>
+            {/* <a>
               <div className="dark:hidden">
                 <Image
                   src={Logo}
@@ -105,7 +105,10 @@ export default function Header04() {
                   alt="Flow Ad Space"
                 />
               </div>
-            </a>
+            </a> */}
+            <h4 className=" font-display text-2xl text-jacarta-700 dark:text-white lg:text-3xl xl:text-4xl"> 
+              <span className="animate-gradient">FANs</span>
+            </h4>
           </Link>
 
           <div className="js-mobile-menu dark:bg-jacarta-800 invisible fixed inset-0 z-10 ml-auto items-center bg-white opacity-0 lg:visible lg:relative lg:inset-auto lg:flex lg:bg-transparent lg:opacity-100 dark:lg:bg-transparent w-full">
@@ -168,7 +171,7 @@ export default function Header04() {
         }`}
       >
         <div className="t-0 dark:bg-jacarta-800 fixed left-0 z-10 flex w-full items-center justify-between bg-white p-6 lg:hidden">
-          <div className="dark:hidden">
+          {/* <div className="dark:hidden">
             <Image
               src={Logo}
               height={28}
@@ -185,7 +188,10 @@ export default function Header04() {
               width={130}
               alt="Xhibiter | NFT Marketplace"
             />
-          </div>
+          </div> */}
+          <h4 className=" font-display text-2xl text-jacarta-700 dark:text-white lg:text-3xl xl:text-4xl"> 
+              <span className="animate-gradient">FANs</span>
+            </h4>
 
           <button
             className="js-mobile-close border-jacarta-100 hover:bg-accent focus:bg-accent group dark:hover:bg-accent ml-2 flex h-10 w-10 items-center justify-center rounded-full border bg-white transition-colors hover:border-transparent focus:border-transparent dark:border-transparent dark:bg-white/[.15]"

@@ -4,7 +4,7 @@ const Meta = ({ title, keyword, desc }) => {
   return (
     <div>
       <Head>
-        <title>{title} || </title>
+        <title>{title}</title>
         <link rel="icon" href="/favicon.png" />
         <meta name="description" content={desc} />
         <meta name="keyword" content={keyword} />

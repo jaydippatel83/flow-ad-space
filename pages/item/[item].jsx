@@ -22,8 +22,7 @@ const Item = () => {
 
 	return (
 		<>
-			<Meta title={`${pid} || FAN(Flow Ad Network)`} />
-			{/*  <!-- Item --> */}
+			<Meta title={`${pid}`} /> 
 			<section className="relative lg:mt-24 lg:pt-24 lg:pb-24 mt-24 pt-12 pb-24">
 				<picture className="pointer-events-none absolute inset-0 -z-10 dark:hidden">
 					<img src="/images/gradient_light.jpg" alt="gradient" className="h-full" />
