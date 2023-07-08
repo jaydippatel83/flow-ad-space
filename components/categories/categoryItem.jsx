@@ -7,50 +7,63 @@ import Likes from "../likes";
 import Auctions_dropdown from "../dropdown/Auctions_dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { buyModalShow } from "../../redux/counterSlice";
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "../firebase";
 
 const CategoryItem = () => {
   const { sortedtrendingCategoryItemData } = useSelector(
     (state) => state.counter
   );
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
+
+  const [nftData,setNftData]=useState([])
+  
+	useEffect(()=>{
+		getNftData();
+	},[])
+
+
+	async function getNftData() {
+    const arry =[];
+		const q = query(collection(db, "CreateNFTs"));
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((fire) => { 
+			const id = fire.id;
+      arry.push({ ...fire.data(), id })  
+		})
+    setNftData(arry);
+	}
+
 
   return (
     <div className="grid grid-cols-1 gap-[1.875rem] md:grid-cols-2 lg:grid-cols-4">
-      {sortedtrendingCategoryItemData.map((item) => {
+      {nftData && nftData.map((item) => {
         const {
           id,
-          image,
-          title,
-          price,
-          bidLimit,
-          bidCount,
-          likes,
-          creator,
-          owner,
+          Photo,
+          Nftname,
+          Description,  
+          Creator, 
+          Price
         } = item;
-        const itemLink = image
-          .split("/")
-          .slice(-1)
-          .toString()
-          .replace(".jpg", "")
-          .replace(".gif", "");
+        
         return (
           <article key={id}>
             <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2.5xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg">
               <figure className="relative">
-                <Link href={`/item/${itemLink}`}>
+                <Link href={`/item/item`}>
                   <a>
                     <img
-                      src={image}
+                      src={Photo}
                       alt="item 5"
                       className="w-full h-[230px] rounded-[0.625rem] object-cover"
                     />
                   </a>
                 </Link>
 
-                <Likes like={likes} />
+                {/* <Likes like={likes} /> */}
 
-                <div className="absolute left-3 -bottom-3">
+                {/* <div className="absolute left-3 -bottom-3">
                   <div className="flex -space-x-2">
                     <Link href={`/item/${itemLink}`}>
                       <a>
@@ -76,13 +89,13 @@ const CategoryItem = () => {
                       </a>
                     </Link>
                   </div>
-                </div>
+                </div> */}
               </figure>
               <div className="mt-7 flex items-center justify-between">
-                <Link href={`/item/${itemLink}`}>
+                <Link href={`/item/item`}>
                   <a>
                     <span className="font-display text-jacarta-700 hover:text-accent text-base dark:text-white">
-                      {title}
+                      {Nftname}
                     </span>
                   </a>
                 </Link>
@@ -92,10 +105,10 @@ const CategoryItem = () => {
               </div>
               <div className="mt-2 text-sm">
                 <span className="dark:text-jacarta-200 text-jacarta-700 mr-1">
-                  {price}
+                  {Price}
                 </span>
                 <span className="dark:text-jacarta-300 text-jacarta-500">
-                  {bidCount}/{bidLimit}
+                  {1}/{3}
                 </span>
               </div>
 
@@ -106,7 +119,7 @@ const CategoryItem = () => {
                 >
                   Buy now
                 </button>
-                <Link href={`/item/${itemLink}`}>
+                {/* <Link href={`/item/${itemLink}`}>
                   <a className="group flex items-center">
                     <svg className="icon icon-history group-hover:fill-accent dark:fill-jacarta-200 fill-jacarta-500 mr-1 mb-[3px] h-4 w-4">
                       <use xlinkHref="/icons.svg#icon-history"></use>
@@ -115,7 +128,7 @@ const CategoryItem = () => {
                       View History
                     </span>
                   </a>
-                </Link>
+                </Link> */}
               </div>
             </div>
           </article>

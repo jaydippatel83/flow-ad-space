@@ -7,32 +7,17 @@ import Price_history from "./Price_history";
 
 const ItemsTabs = () => {
   const [tabsActive, setTabsActive] = useState(1);
-  const tabsHeadText = [
+  const tabsHeadText = [ 
     {
       id: 1,
-      text: "Offers",
-      icon: "offers",
-    },
-    {
-      id: 2,
       text: "properties",
       icon: "properties",
     },
     {
-      id: 3,
+      id: 2,
       text: "details",
       icon: "details",
-    },
-    {
-      id: 4,
-      text: "activities",
-      icon: "activity",
-    },
-    {
-      id: 5,
-      text: "price history",
-      icon: "price",
-    },
+    } 
   ];
   return (
     <>
@@ -62,11 +47,7 @@ const ItemsTabs = () => {
                 </Tab>
               );
             })}
-          </TabList>
-
-          <TabPanel className="tab-content">
-            <OfferTab />
-          </TabPanel>
+          </TabList> 
           <TabPanel>
             <Properties />
           </TabPanel>
@@ -116,13 +97,7 @@ const ItemsTabs = () => {
                 </div>
               </div>
             </div>
-          </TabPanel>
-          <TabPanel>
-            <Activity_tab />
-          </TabPanel>
-          <TabPanel>
-            <Price_history classes="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 rounded-t-2lg rounded-b-2lg rounded-tl-none border bg-white p-6" />
-          </TabPanel>
+          </TabPanel> 
         </Tabs>
       </div>
     </>

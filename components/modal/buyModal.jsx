@@ -15,7 +15,7 @@ const BuyModal = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="buyNowModalLabel">
-                Complete checkout
+                Buy Item
               </h5>
               <button
                 type="button"
@@ -37,16 +37,8 @@ const BuyModal = () => {
 
             {/* <!-- Body --> */}
             <div className="modal-body p-6">
-              <div className="mb-2 flex items-center justify-between">
-                <span className="font-display text-jacarta-700 text-sm font-semibold dark:text-white">
-                  Item
-                </span>
-                <span className="font-display text-jacarta-700 text-sm font-semibold dark:text-white">
-                  Subtotal
-                </span>
-              </div>
-
-              <div className="dark:border-jacarta-600 border-jacarta-100 relative flex items-center border-t border-b py-4">
+              
+              <div className="dark:border-jacarta-600 border-jacarta-100 relative flex items-center   border-b py-4">
                 <figure className="mr-5 self-start">
                   <img
                     src="/images/avatars/avatar_2.jpg"
@@ -122,31 +114,19 @@ const BuyModal = () => {
                     $130.82
                   </div>
                 </div>
-              </div>
-
-              {/* <!-- Terms --> */}
-              <div className="mt-4 flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="buyNowTerms"
-                  className="checked:bg-accent dark:bg-jacarta-600 text-accent border-jacarta-200 focus:ring-accent/20 dark:border-jacarta-500 h-5 w-5 self-start rounded focus:ring-offset-0"
-                />
-                <label
-                  htmlFor="buyNowTerms"
-                  className="dark:text-jacarta-200 text-sm"
-                >
-                  By checking this box, I agree to {"Xhibiter's"}{" "}
-                  <Link href="/tarms">
-                    <a className="text-accent">Terms of Service</a>
-                  </Link>
-                </label>
-              </div>
+              </div> 
+              
             </div>
             {/* <!-- end body --> */}
 
             <div className="modal-footer">
               <div className="flex items-center justify-center space-x-4">
-                {/* <Confirm_checkout /> */}metamask
+              <button
+                  type="button"
+                  className="bg-accent shadow-accent-volume hover:bg-accent-dark rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
+                >
+                  Buy Item
+                </button>
               </div>
             </div>
           </div>

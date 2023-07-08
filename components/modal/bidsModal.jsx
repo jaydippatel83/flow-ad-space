@@ -76,27 +76,11 @@ const BidsModal = () => {
 
               <div className="text-right">
                 <span className="dark:text-jacarta-400 text-sm">
-                  Balance: 0.0000 WETH
+                  Balance: 0.0000 FLOW
                 </span>
               </div>
 
-              {/* <!-- Terms --> */}
-              <div className="mt-4 flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  className="checked:bg-accent dark:bg-jacarta-600 text-accent border-jacarta-200 focus:ring-accent/20 dark:border-jacarta-500 h-5 w-5 self-start rounded focus:ring-offset-0"
-                />
-                <label
-                  htmlFor="terms"
-                  className="dark:text-jacarta-200 text-sm"
-                >
-                  By checking this box, I agree to {"Xhibiter's"}{" "}
-                  <a href="#" className="text-accent">
-                    Terms of Service
-                  </a>
-                </label>
-              </div>
+              
             </div>
             {/* <!-- end body --> */}
 

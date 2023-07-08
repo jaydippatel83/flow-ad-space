@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css"; // optional 
 import { FileUploader } from "react-drag-drop-files";
@@ -9,6 +9,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from "@mui/x-date-pickers";
 import { NFTStorage, File } from 'nft.storage'
 import { toast } from "react-toastify";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../components/firebase";
+import { AuthContext } from "../../context/AuthConext";
 
 const Create = () => {
   const fileTypes = [
@@ -31,6 +34,9 @@ const Create = () => {
   const [description, setDescription] = useState('');
   const [price, setpPrice] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const authContex = useContext(AuthContext);
+  const { user } = authContex;
 
   const NFT_STORAGE_KEY = process.env.NEXT_APP_NFT_STORAGE_KEY;
 
@@ -60,7 +66,48 @@ const Create = () => {
   };
 
   const handleCreateNFT = async () => {
-    toast.success("Successfully NFT Created!")
+    const q = query(collection(db, "Users"), where("Address", "==", user?.addr));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      const data = {
+        Nftname: nftname,
+        Description: description,
+        Creator: user && user?.addr,
+        Photo: file,
+        Price:price,
+        StartDate: dayjs(startDate).format('LL'),
+        EndDate: dayjs(endDate).format('LL'),
+        CreatedAt: new Date(),
+      };
+      await addDoc(collection(db, "CreateNFTs"), data);
+      setUpdate(!update);
+      toast.success("NFT successfully Created!!");
+      setFile(""); 
+      setNftName("");
+      setDescription("")
+      setpPrice("")
+    } else {
+      querySnapshot.forEach(async (fire) => {
+        console.log(fire.data(), "data");
+        const data = {
+          Nftname: nftname,
+          Description: description,
+          Creator: fire.data(),
+          Photo: file,
+          Price:price,
+          StartDate: dayjs(startDate).format('LL'),
+          EndDate: dayjs(endDate).format('LL'),
+          CreatedAt: new Date(),
+        };
+        await addDoc(collection(db, "CreateNFTs"), data);
+        setUpdate(!update);
+        toast.success("NFT successfully Created!!");
+        setFile(""); 
+        setNftName("");
+        setDescription("");
+        setpPrice("");
+      })
+    }
   }
 
 

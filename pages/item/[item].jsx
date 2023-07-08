@@ -22,7 +22,7 @@ const Item = () => {
 
 	return (
 		<>
-			<Meta title={`${pid}`} /> 
+			<Meta title={`${pid}`} />
 			<section className="relative lg:mt-24 lg:pt-24 lg:pb-24 mt-24 pt-12 pb-24">
 				<picture className="pointer-events-none absolute inset-0 -z-10 dark:hidden">
 					<img src="/images/gradient_light.jpg" alt="gradient" className="h-full" />
@@ -119,15 +119,14 @@ const Item = () => {
 
 										<div className="mb-8 flex items-center space-x-4 whitespace-nowrap">
 											<div className="flex items-center">
-												<Tippy content={<span>FLOW</span>}>
-													<span className="-ml-1">
-														<svg className="icon mr-1 h-4 w-4">
-															<use xlinkHref="/icons.svg#icon-FLOW"></use>
-														</svg>
-													</span>
-												</Tippy>
+												<img
+													src="/images/chains/fl.png"
+													alt="avatar"
+													className="rounded-2lg mr-1 h-4 w-4"
+													loading="lazy"
+												/>
 												<span className="text-green text-sm font-medium tracking-tight">
-													{price} FLOW
+													{price}
 												</span>
 											</div>
 											<span className="dark:text-jacarta-300 text-jacarta-400 text-sm">
@@ -242,7 +241,7 @@ const Item = () => {
 															</Link>
 														</figure>
 														<div>
-															<div className="flex items-center whitespace-nowrap">  
+															<div className="flex items-center whitespace-nowrap">
 																<img
 																	src="/images/chains/fl.png"
 																	alt="avatar"
@@ -250,7 +249,7 @@ const Item = () => {
 																	loading="lazy"
 																/>
 																<span className="text-green text-lg font-medium leading-tight tracking-tight">
-																	{price} FLOW
+																	{price}
 																</span>
 															</div>
 															<span className="dark:text-jacarta-300 text-jacarta-400 text-sm">
