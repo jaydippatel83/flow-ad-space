@@ -44,9 +44,6 @@ const Create = () => {
   const cadenceContext = useContext(CadenceContext);
   const { createNFT } = cadenceContext;
 
-  const NFT_STORAGE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDlkNTYwMUJiOWNFOTkyQjZkYjU4OWYzMGY1NDZGMmYxODJhM0RCOTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY4ODk5NDM4MTAwNiwibmFtZSI6IkZhbnMifQ.V9xiLHu1DCUXWc_ALAhaNCkHh855ilsBrM1t8r-yxAY";
-
   const handleChange = async (file) => {
     setLoading(true);
     const filename = file.name;
