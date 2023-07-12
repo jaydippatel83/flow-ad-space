@@ -1,17 +1,18 @@
 import React, { useContext, useState } from "react";
 import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css"; // optional 
+import "tippy.js/dist/tippy.css"; // optional
 import { FileUploader } from "react-drag-drop-files";
 import Meta from "../../components/Meta";
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
-import { NFTStorage, File } from 'nft.storage'
+import { NFTStorage, File } from "nft.storage";
 import { toast } from "react-toastify";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../components/firebase";
 import { AuthContext } from "../../context/AuthConext";
+import { CadenceContext } from "../../context/CadenceContext";
 
 const Create = () => {
   const fileTypes = [
@@ -30,31 +31,38 @@ const Create = () => {
   const [file, setFile] = useState("");
   const [startDate, setStartDate] = React.useState(dayjs(new Date()));
   const [endDate, setEndDate] = React.useState(dayjs(new Date()));
-  const [nftname, setNftName] = useState('');
-  const [description, setDescription] = useState('');
+  const [nftname, setNftName] = useState("");
+  const [description, setDescription] = useState("");
   const [price, setpPrice] = useState(1);
+  const [image, setImage] = useState({});
   const [loading, setLoading] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [loadingcreate, setLoadingCreate] = useState(false);
   const authContex = useContext(AuthContext);
   const { user } = authContex;
 
-  const NFT_STORAGE_KEY = process.env.NEXT_APP_NFT_STORAGE_KEY;
+  const cadenceContext = useContext(CadenceContext);
+  const { createNFT } = cadenceContext;
+
+  const NFT_STORAGE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDlkNTYwMUJiOWNFOTkyQjZkYjU4OWYzMGY1NDZGMmYxODJhM0RCOTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY4ODk5NDM4MTAwNiwibmFtZSI6IkZhbnMifQ.V9xiLHu1DCUXWc_ALAhaNCkHh855ilsBrM1t8r-yxAY";
 
   const handleChange = async (file) => {
     setLoading(true);
     const filename = file.name;
-    const img = new File([file], file.name, { type: file.type })
-    const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY })
+    const img = new File([file], file.name, { type: file.type });
+    const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY });
     const res = await nftstorage.store({
       image: img,
       name: filename,
       description: filename,
-    })
+    });
     const url = res.data.image.href.replace(
       "ipfs://",
       "https://nftstorage.link/ipfs/"
-    )
-    setFile(url)
+    );
+    setFile(url);
+    setImage(img);
     setLoading(false);
   };
   const handleStartDateChange = (newValue) => {
@@ -66,50 +74,43 @@ const Create = () => {
   };
 
   const handleCreateNFT = async () => {
-    const q = query(collection(db, "Users"), where("Address", "==", user?.addr));
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
+    setLoadingCreate(true);
+    const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY });
+    const res = await nftstorage.store({
+      image: image,
+      name: nftname,
+      description: description,
+      Price: price,
+      StartDate: dayjs(startDate).format("LL"),
+      EndDate: dayjs(endDate).format("LL"),
+    });
+
+    let metadataUrl = `https://${res.ipnft}.ipfs.nftstorage.link/metadata.json`;
+
+    let nftId = await createNFT(price, metadataUrl, nftname);
+
+    if (nftId) {
       const data = {
         Nftname: nftname,
         Description: description,
         Creator: user && user?.addr,
         Photo: file,
-        Price:price,
-        StartDate: dayjs(startDate).format('LL'),
-        EndDate: dayjs(endDate).format('LL'),
+        Price: price,
+        StartDate: dayjs(startDate).format("LL"),
+        EndDate: dayjs(endDate).format("LL"),
         CreatedAt: new Date(),
+        nftId: nftId,
       };
       await addDoc(collection(db, "CreateNFTs"), data);
       setUpdate(!update);
       toast.success("NFT successfully Created!!");
-      setFile(""); 
+      setFile("");
       setNftName("");
-      setDescription("")
-      setpPrice("")
-    } else {
-      querySnapshot.forEach(async (fire) => {
-        console.log(fire.data(), "data");
-        const data = {
-          Nftname: nftname,
-          Description: description,
-          Creator: fire.data(),
-          Photo: file,
-          Price:price,
-          StartDate: dayjs(startDate).format('LL'),
-          EndDate: dayjs(endDate).format('LL'),
-          CreatedAt: new Date(),
-        };
-        await addDoc(collection(db, "CreateNFTs"), data);
-        setUpdate(!update);
-        toast.success("NFT successfully Created!!");
-        setFile(""); 
-        setNftName("");
-        setDescription("");
-        setpPrice("");
-      })
+      setDescription("");
+      setpPrice("");
+      setLoadingCreate(false);
     }
-  }
-
+  };
 
   return (
     <div>
@@ -139,7 +140,9 @@ const Create = () => {
 
                 {file ? (
                   <p className="dark:text-jacarta-300 text-2xs mb-3">
-                    {loading ? "File Uploading...!" : `successfully uploaded : ${file}`}
+                    {loading
+                      ? "File Uploading...!"
+                      : `successfully uploaded : ${file}`}
                   </p>
                 ) : (
                   <p className="dark:text-jacarta-300 text-2xs mb-3">
@@ -160,8 +163,7 @@ const Create = () => {
                       <path d="M16 13l6.964 4.062-2.973.85 2.125 3.681-1.732 1-2.125-3.68-2.223 2.15L16 13zm-2-7h2v2h5a1 1 0 0 1 1 1v4h-2v-3H10v10h4v2H9a1 1 0 0 1-1-1v-5H6v-2h2V9a1 1 0 0 1 1-1h5V6zM4 14v2H2v-2h2zm0-4v2H2v-2h2zm0-4v2H2V6h2zm0-4v2H2V2h2zm4 0v2H6V2h2zm4 0v2h-2V2h2zm4 0v2h-2V2h2z" />
                     </svg>
                     <p className="dark:text-jacarta-300 mx-auto max-w-xs text-xs">
-                      JPG, PNG, GIF, SVG. Max
-                      size: 20 MB
+                      JPG, PNG, GIF, SVG. Max size: 20 MB
                     </p>
                   </div>
                   <div className="dark:bg-jacarta-600 bg-jacarta-50 absolute inset-4 cursor-pointer rounded opacity-0 group-hover:opacity-100 ">
@@ -210,7 +212,6 @@ const Create = () => {
                       value={startDate}
                       onChange={handleStartDateChange}
                     />
-
                   </div>
                   <div className="mb-6">
                     <label
@@ -231,7 +232,7 @@ const Create = () => {
 
               <div className="mb-6">
                 <label
-                  htmlFor="item-name"
+                  htmlFor="item-price"
                   className="font-display text-jacarta-700 mb-2 block dark:text-white"
                 >
                   Price<span className="text-red">*</span>
@@ -239,9 +240,9 @@ const Create = () => {
                 <input
                   type="number"
                   onChange={(e) => setpPrice(e.target.value)}
-                  id="item-name"
+                  id="item-price"
                   className="dark:bg-jacarta-700 border-jacarta-100 hover:ring-accent/10 focus:ring-accent dark:border-jacarta-600 dark:placeholder:text-jacarta-300 w-full rounded-lg py-3 px-3 hover:ring-2 dark:text-white"
-                  placeholder="Item name"
+                  placeholder="Item Price"
                   required
                 />
               </div>
@@ -264,9 +265,10 @@ const Create = () => {
               </div>
               <button
                 onClick={handleCreateNFT}
+                disabled={loadingcreate}
                 className="bg-accent-lighter hover:bg-accent-dark cursor-pointer rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
               >
-                Create
+                {loadingcreate ? "Creating...." : "Create"}
               </button>
             </div>
             <div className="mt-6 mx-auto">
@@ -274,9 +276,9 @@ const Create = () => {
                 Preview NFT
               </label>
               <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg text-jacarta-500">
-
+                {console.log(file, "file")}
                 <img
-                  src={file ? file : '/images/products/item_1.jpg'}
+                  src={file ? file : "/images/products/item_1.jpg"}
                   alt={nftname}
                   className="rounded-[0.625rem] w-full h-[240px]"
                   loading="lazy"
@@ -305,7 +307,7 @@ const Create = () => {
                       Start Date
                     </span>
                     <span className="dark:text-jacarta-300 text-jacarta-500">
-                      {dayjs(startDate).format('LL')}
+                      {dayjs(startDate).format("LL")}
                     </span>
                   </div>
                   <div className="flex flex-col">
@@ -313,21 +315,18 @@ const Create = () => {
                       End Date
                     </span>
                     <span className="dark:text-jacarta-300 text-jacarta-500">
-                      {dayjs(endDate).format('LL')}
+                      {dayjs(endDate).format("LL")}
                     </span>
                   </div>
                 </div>
                 <div className="mt-2 text-sm">
                   <span className="dark:text-jacarta-300 text-jacarta-500 line-clamp-3 min-w-[200px] max-w-[300px] w-[240px]">
-                    {description ? description : 'Description'}
+                    {description ? description : "Description"}
                   </span>
                 </div>
               </div>
             </div>
-
           </div>
-
-
         </div>
       </section>
     </div>

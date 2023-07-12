@@ -4,22 +4,21 @@ import Logo from "./../../public/images/logo.png";
 import WhiteLogo from "./../../public/images/logo_white.png";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
-import {
-  isParentPageActive,
-} from "../../utils/daynamicNavigation";
+import { isParentPageActive } from "../../utils/daynamicNavigation";
 import { useContext, useEffect, useState } from "react";
 import * as fcl from "@onflow/fcl";
 import UserProfile from "./UserProfile";
 import { AuthContext } from "../../context/AuthConext";
+import { CadenceContext } from "../../context/CadenceContext";
 
 export default function Header04() {
-  const authContext = useContext(AuthContext)
-  const {user,login} = authContext;
+  const authContext = useContext(AuthContext);
+  const { user, login, userExist } = authContext;
+  const cadenceContext = useContext(CadenceContext);
+  const { setupUser } = cadenceContext;
   const [toggle, setToggle] = useState(false);
   const [isScroll, setScroll] = useState(false);
 
- 
- 
   // sticky menu
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -30,6 +29,16 @@ export default function Header04() {
       }
     });
   }, []);
+
+  // useEffect(() => {
+  //   const init = async () => {
+  //     if (user?.addr && userExist == false) {
+  //       await setupUser();
+  //     }
+
+  //   };
+  //   init();
+  // }, [user]);
 
   // window resize
   useEffect(() => {
@@ -42,48 +51,48 @@ export default function Header04() {
 
   const route = useRouter();
 
-
   const pages = [
     {
       name: "Home",
-      path: '/',
+      path: "/",
       pages: [
         {
           id: uuidv4(),
           name: "Home",
           path: "/",
         },
-      ]
+      ],
     },
     {
       name: "Explore",
-      path: '/collection/collection_wide',
+      path: "/collection/collection_wide",
       pages: [
         {
           id: uuidv4(),
           name: "Explore",
           path: "/collection/collection_wide",
         },
-      ]
+      ],
     },
     {
       name: "MintNFT",
-      path: '/create',
+      path: "/create",
       pages: [
         {
           id: uuidv4(),
           name: "MintNFT",
           path: "/create",
         },
-      ]
+      ],
     },
-  ]
+  ];
 
   return (
     <>
       <header
-        className={`js-page-header fixed top-0 z-20 w-full backdrop-blur transition-colors ${isScroll ? "js-page-header--is-sticky" : ""
-          }`}
+        className={`js-page-header fixed top-0 z-20 w-full backdrop-blur transition-colors ${
+          isScroll ? "js-page-header--is-sticky" : ""
+        }`}
       >
         <div className="flex items-center px-6 py-6 xl:px-24 ">
           <Link className="shrink-0" href="/">
@@ -106,7 +115,7 @@ export default function Header04() {
                 />
               </div>
             </a> */}
-            <h4 className=" font-display text-2xl text-jacarta-700 dark:text-white lg:text-3xl xl:text-4xl"> 
+            <h4 className=" font-display text-2xl text-jacarta-700 dark:text-white lg:text-3xl xl:text-4xl">
               <span className="animate-gradient">FANs</span>
             </h4>
           </Link>
@@ -114,38 +123,39 @@ export default function Header04() {
           <div className="js-mobile-menu dark:bg-jacarta-800 invisible fixed inset-0 z-10 ml-auto items-center bg-white opacity-0 lg:visible lg:relative lg:inset-auto lg:flex lg:bg-transparent lg:opacity-100 dark:lg:bg-transparent w-full">
             <nav className="navbar w-full mt-24  lg:mt-0">
               <ul className="flex flex-col justify-center lg:flex-row">
-                {
-                  pages.map((page, i) => (
-                    <li key={i} className="js-nav-dropdown group relative">
-                      <button className=" text-jacarta-700 font-display hover:text-accent focus:text-accent dark:hover:text-accent dark:focus:text-accent flex items-center justify-between py-3.5 text-base dark:text-white lg:px-5 w-full">
-                        <Link className="shrink-0" href={page.path}>
-                          <span
-                            className={
-                              isParentPageActive(page.pages, route.asPath)
-                                ? "text-accent  dark:text-accent"
-                                : ""
-                            }
-                          >
-                            {page.name}
-                          </span>
-                        </Link>
-                      </button>
-                    </li>
-                  ))
-                }
-
+                {pages.map((page, i) => (
+                  <li key={i} className="js-nav-dropdown group relative">
+                    <button className=" text-jacarta-700 font-display hover:text-accent focus:text-accent dark:hover:text-accent dark:focus:text-accent flex items-center justify-between py-3.5 text-base dark:text-white lg:px-5 w-full">
+                      <Link className="shrink-0" href={page.path}>
+                        <span
+                          className={
+                            isParentPageActive(page.pages, route.asPath)
+                              ? "text-accent  dark:text-accent"
+                              : ""
+                          }
+                        >
+                          {page.name}
+                        </span>
+                      </Link>
+                    </button>
+                  </li>
+                ))}
               </ul>
             </nav>
           </div>
           <div className="hidden  justify-end lg:flex">
-
-            {
-              user && user.addr ? <UserProfile user={user} />
-                : <button onClick={login} className="rounded-full bg-white py-3 px-8 text-center font-semibold text-accent shadow-white-volume transition-all hover:bg-accent-dark hover:text-white hover:shadow-accent-volume">
-                  SignIn
-                </button>
-
-            }
+            {user && user.addr ? (
+              <UserProfile user={user} />
+            ) : (
+              <button
+                onClick={async () => {
+                  await login();
+                }}
+                className="rounded-full bg-white py-3 px-8 text-center font-semibold text-accent shadow-white-volume transition-all hover:bg-accent-dark hover:text-white hover:shadow-accent-volume"
+              >
+                SignIn
+              </button>
+            )}
           </div>
           <div className="ml-auto flex justify-center lg:hidden">
             <button
@@ -167,7 +177,9 @@ export default function Header04() {
           </div>
         </div>
       </header>
-      <div className={`lg:hidden js-mobile-menu dark:bg-jacarta-800 invisible fixed inset-0 z-20 ml-auto items-center bg-white opacity-0 lg:visible lg:relative lg:inset-auto lg:bg-transparent lg:opacity-100 dark:lg:bg-transparent ${toggle ? "nav-menu--is-open" : "hidden"
+      <div
+        className={`lg:hidden js-mobile-menu dark:bg-jacarta-800 invisible fixed inset-0 z-20 ml-auto items-center bg-white opacity-0 lg:visible lg:relative lg:inset-auto lg:bg-transparent lg:opacity-100 dark:lg:bg-transparent ${
+          toggle ? "nav-menu--is-open" : "hidden"
         }`}
       >
         <div className="t-0 dark:bg-jacarta-800 fixed left-0 z-10 flex w-full items-center justify-between bg-white p-6 lg:hidden">
@@ -189,9 +201,9 @@ export default function Header04() {
               alt="Xhibiter | NFT Marketplace"
             />
           </div> */}
-          <h4 className=" font-display text-2xl text-jacarta-700 dark:text-white lg:text-3xl xl:text-4xl"> 
-              <span className="animate-gradient">FANs</span>
-            </h4>
+          <h4 className=" font-display text-2xl text-jacarta-700 dark:text-white lg:text-3xl xl:text-4xl">
+            <span className="animate-gradient">FANs</span>
+          </h4>
 
           <button
             className="js-mobile-close border-jacarta-100 hover:bg-accent focus:bg-accent group dark:hover:bg-accent ml-2 flex h-10 w-10 items-center justify-center rounded-full border bg-white transition-colors hover:border-transparent focus:border-transparent dark:border-transparent dark:bg-white/[.15]"
@@ -231,28 +243,23 @@ export default function Header04() {
 
         <nav className="navbar w-full">
           <ul className="flex flex-col lg:flex-row">
-            {
-              pages.map((page, index) => (
-                <li key={index} className="js-nav-dropdown group relative">
-
-                  <button
-                    className=" text-jacarta-700 font-display hover:text-accent focus:text-accent dark:hover:text-accent dark:focus:text-accent flex items-center justify-between py-3.5 text-base dark:text-white lg:px-5 w-full"
-                  >
-                    <Link className="shrink-0" href={page.path}>
-                      <span
-                        className={
-                          isParentPageActive(page.pages, route.asPath)
-                            ? "text-accent  dark:text-accent"
-                            : ""
-                        }
-                      >
-                        {page.name}
-                      </span>
-                    </Link>
-                  </button>
-                </li>
-              ))
-            }
+            {pages.map((page, index) => (
+              <li key={index} className="js-nav-dropdown group relative">
+                <button className=" text-jacarta-700 font-display hover:text-accent focus:text-accent dark:hover:text-accent dark:focus:text-accent flex items-center justify-between py-3.5 text-base dark:text-white lg:px-5 w-full">
+                  <Link className="shrink-0" href={page.path}>
+                    <span
+                      className={
+                        isParentPageActive(page.pages, route.asPath)
+                          ? "text-accent  dark:text-accent"
+                          : ""
+                      }
+                    >
+                      {page.name}
+                    </span>
+                  </Link>
+                </button>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>

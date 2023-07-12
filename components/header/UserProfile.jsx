@@ -9,7 +9,7 @@ const UserProfile = ({ user }) => {
     const getAccountDetails = async () => {
         const account = await fcl.account(user.addr);
         const bal = account.balance / (10 ** 8);
-        setBalance(bal);
+        setBalance(bal.toFixed(2));
     } 
 
 

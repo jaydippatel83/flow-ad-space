@@ -10,6 +10,7 @@ export const AuthContextProvider = (props) => {
     const [user, setUser] = useState();
     const [update, setUpdate] = useState(false);
     const [userData,setUserData]= useState();
+    const [userExist, setUserExists] = useState(false);
 
 
     useEffect(() => {
@@ -22,13 +23,18 @@ export const AuthContextProvider = (props) => {
 
     useEffect(()=>{
         if(user?.addr){
-            getFirestoreData()
+            // getFirestoreData()
         } 
     },[user,update])
 
     const getFirestoreData = async () => { 
         const q = query(collection(db, "Users"), where("Address", "==", user?.addr));
         const querySnapshot = await getDocs(q);
+        if(querySnapshot.empty){
+            setUserExists(false);
+        }else{
+            setUserExists(true); 
+        }
         querySnapshot.forEach((fire) => {
               const id = fire.id;
               setUserData({...fire.data(), id});
@@ -43,7 +49,8 @@ export const AuthContextProvider = (props) => {
                 update,
                 setUpdate,
                 userData,
-                getFirestoreData
+                getFirestoreData,
+                userExist
             }}
             {...props}
         >

@@ -1,0 +1,56 @@
+{
+	"emulators": {
+	  "default": {
+		"port": 3569,
+		"serviceAccount": "emulator-account"
+	  }
+	},
+	"contracts": {
+	  "FlowToken": {
+		"source": "./flow/cadence/contracts/FlowToken.cdc",
+		"aliases": {
+		  "testnet": "0x7e60df042a9c0868"
+		}
+	  },
+	  "FungibleToken": {
+		"source": "./flow/cadence/contracts/FungibleToken.cdc",
+		"aliases": {
+		  "testnet": "0x9a0766d93b6608b7"
+		}
+	  },
+	  "NonFungibleToken": {
+		"source": "./flow/cadence/contracts/NonFungibleToken.cdc",
+		"aliases": {
+		  "testnet": "0x631e88ae7f1d7c20"
+		}
+	  },
+	  "Fans": "./flow/cadence/contracts/Fans.cdc",
+	  "NFTMarketplace": "./flow/cadence/contracts/NFTMarketplace.cdc"
+	},
+	"networks": {
+	  "emulator": "127.0.0.1:3569",
+	  "mainnet": "access.mainnet.nodes.onflow.org:9000",
+	  "testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+	  "emulator-account": {
+		"address": "0xd81f6bc1413b31ce",
+		"key": "d4aa3ee06587d5be831c0f563f7c9fb6da9758429d899985321cc45d78b12f57"
+	  },
+	  "testnet-account": {
+		"address": "0x50a0fed12f57c962",
+		"key": {
+		  "type": "hex",
+		  "index": 0,
+		  "signatureAlgorithm": "ECDSA_P256",
+		  "hashAlgorithm": "SHA3_256",
+		  "privateKey": "8747d5556b1c85bf384abe306b3f2512869dff5c3c91dbc50c4b5cb078ff37b1"
+		}                 
+	  }
+	},
+	"deployments": {
+	  "testnet": {
+		"testnet-account": ["Fans","NFTMarketplace"]
+	  }
+	}
+  }
