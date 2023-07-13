@@ -51,11 +51,11 @@ const CategoryItem = () => {
           <article key={id}>
             <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2.5xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg">
               <figure className="relative">
-                <Link href={`/item/item`}>
+                <Link href={`/item/${id}`}>
                   <a>
                     <img
                       src={Photo}
-                      alt="item 5"
+                      alt="nft"
                       className="w-full h-[230px] rounded-[0.625rem] object-cover"
                     />
                   </a>
@@ -92,7 +92,7 @@ const CategoryItem = () => {
                 </div> */}
               </figure>
               <div className="mt-7 flex items-center justify-between">
-                <Link href={`/item/item`}>
+                <Link href={`/item/${id}`}>
                   <a>
                     <span className="font-display text-jacarta-700 hover:text-accent text-base dark:text-white">
                       {Nftname}
