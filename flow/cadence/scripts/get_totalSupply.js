@@ -1,7 +1,7 @@
 export const getTotalTokenSupply = `
-import Fans from 0x50a0fed12f57c962
+import Fans2 from 0x03c1bff76b994e92
 
 pub fun main(): UInt64 {
-  return Fans.totalSupply
+  return Fans2.totalSupply
 }
 `
