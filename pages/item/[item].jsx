@@ -175,12 +175,10 @@ const Item = () => {
 														loading="lazy"
 													/>
 													<span className="text-green text-lg font-medium leading-tight tracking-tight">
-														{userData && userData.Nftname}
+													{userData && userData.Price} FLOW
 													</span>
 												</div>
-												<span className="dark:text-jacarta-300 text-jacarta-400 text-sm">
-													 {userData && userData.Price}
-												</span>
+												 
 											</div>
 										</div>
 									</div>
