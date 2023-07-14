@@ -65,6 +65,7 @@ const Create = () => {
   const [open, setOpen] = useState(false);
   const [prompt, setPrompt] = useState("");
   const [generateLoading, setGenerateLoading] = useState(false);
+  const [answer, setAnswer] = useState("");
   const authContex = useContext(AuthContext);
   const { user } = authContex;
 
@@ -173,20 +174,16 @@ const Create = () => {
   ];
 
   const generateContent = async () => {
+  
     setGenerateLoading(true);
 
     try {
       const res = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: prompt,
-        temperature: 0,
-        max_tokens: 100,
-        top_p: 1,
-        frequency_penalty: 0.0,
-        presence_penalty: 0.0,
-        stop: ["\n"],
+        model: "text-davinci-003", 
+        prompt: `I Have Defined Place Like Stadium, Auditorium And Art Gallery in Metaverse. SO If ${prompt} In Which Place From Above I Should Do That?` ,
+        max_tokens: 2048,
       });
-      console.log(res,"response.....");
+     setAnswer(res.data.choices[0].text);
 
       setGenerateLoading(false);
     } catch (error) {
@@ -541,7 +538,7 @@ const Create = () => {
                 <span className="text-red">*</span>
               </label>
               <textarea
-                placeholder={"Type Something...."}
+                placeholder={"I Want To Do Advertisment Of...."}
                 id="question"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
@@ -553,6 +550,13 @@ const Create = () => {
               <button className="bg-accent-lighter hover:bg-accent-dark cursor-pointer rounded-full py-3 px-8 text-center font-semibold text-white transition-all" onClick={() => generateContent()}>
                {generateLoading ? "Generating..." : "Generate"}
               </button>
+
+              <label
+                htmlFor="description"
+                className="font-display text-jacarta-700 mb-2 block dark:text-white"
+              >
+                   {answer}
+              </label>
             </div>
           </Box>
         </Container>

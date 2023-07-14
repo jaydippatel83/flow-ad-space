@@ -28,8 +28,8 @@ const Hero_4 = () => {
         <div className="container">
           <div className="mx-auto max-w-2xl pt-24 text-center">
             <h1 className="mb-10 font-display text-5xl text-jacarta-700 dark:text-white lg:text-6xl xl:text-7xl">
-              Discover, Collect & Sell
-              <span className="animate-gradient"> Creative NFTs</span>
+              Discover, Collect & Sell Creative NFTs
+      
             </h1>
             {/* <!-- Search --> */}
             <div className="relative mb-4">
