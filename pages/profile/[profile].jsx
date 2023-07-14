@@ -187,7 +187,7 @@ const Edit_user = () => {
 							<div className="flex space-x-5 md:w-1/2 md:pl-8">
 								<form className="shrink-0">
 									<figure className="relative inline-block">
-										<Image
+										<img
 											src={preview ? preview : ( userData ? userData.Photo : '/images/user/user_avatar.gif')}
 											alt="collection avatar"
 											className="dark:border-jacarta-600 rounded-xl border-[5px] border-white"
