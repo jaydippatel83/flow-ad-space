@@ -11,13 +11,29 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { bidsModalShow } from "../../redux/counterSlice";
 import { useDispatch } from "react-redux";
 import Likes from "../likes";
+import { useEffect, useState } from "react";
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "../firebase";
 
 const BidsCarousel = () => {
   const dispatch = useDispatch();
-  
-  const handleclick = () => {
-    console.log("clicked on ");
-  };
+  const [userData,setUserData]= useState([]);
+
+  const getUsers= async()=>{
+    const arry =[];
+		const q = query(collection(db, "CreateNFTs"));
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((fire) => { 
+			const id = fire.id;
+      arry.push({ ...fire.data(), id })  
+		})
+    setUserData(arry);
+  }
+
+  useEffect(()=>{
+    getUsers();
+  },[])
+
   return (
     <>
       <Swiper
@@ -45,26 +61,21 @@ const BidsCarousel = () => {
         }}
         className=" card-slider-4-columns !py-5"
       >
-        {bidsData.map((item) => {
-          const { id, image, title, bid_number, eth_number, react_number } =
-            item;
-          const itemLink = image
-            .split("/")
-            .slice(-1)
-            .toString()
-            .replace(".jpg", "");
+        {userData && userData.map((item) => {
+          const { id, Creator, Description, Nftname, Price, Photo, nftId } =
+            item; 
           return (
             <SwiperSlide className="text-white" key={id}>
               <article>
                 <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg text-jacarta-500">
                   <figure>
                     {/* {`item/${itemLink}`} */}
-                    <Link href={"/item/" + itemLink}>
+                    <Link href={"/item/" + id}>
                       <a>
                         <div className="w-full">
-                          <Image
-                            src={image}
-                            alt={title}
+                          <img
+                            src={Photo}
+                            alt={Nftname}
                             height={230}
                             width={230}
                             layout="responsive"
@@ -77,10 +88,10 @@ const BidsCarousel = () => {
                     </Link>
                   </figure>
                   <div className="mt-4 flex items-center justify-between">
-                    <Link href={"/item/" + itemLink}>
+                    <Link href={"/item/" + id}>
                       <a>
                         <span className="font-display text-jacarta-700 hover:text-accent text-base dark:text-white">
-                          {title}
+                          {Nftname}
                         </span>
                       </a>
                     </Link>
@@ -93,7 +104,7 @@ const BidsCarousel = () => {
 																/>
 
                       <span className="text-green text-sm font-medium tracking-tight">
-                        {eth_number} FLOW
+                        {Price} FLOW
                       </span>
                     </span>
                   </div>
@@ -102,7 +113,7 @@ const BidsCarousel = () => {
                       Current Bid
                     </span>
                     <span className="dark:text-jacarta-100 text-jacarta-700">
-                      {bid_number} FLOW
+                      {Price} FLOW
                     </span>
                   </div>
 
@@ -116,7 +127,7 @@ const BidsCarousel = () => {
                     </button>
 
                     <Likes
-                      like={react_number}
+                      like={32}
                       classes="flex items-center space-x-1"
                     />
                   </div>
