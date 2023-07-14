@@ -87,12 +87,12 @@ const Edit_user = () => {
 			<div className="pt-[5.5rem] lg:pt-24">
 				{/* <!-- Banner --> */}
 				<div className="relative">
-					<img
+					{/* <img
 						src={coverPreview ? coverPreview : (userData ? userData.Cover : '/images/user/banner.jpg')}
 						alt="banner"
 						className="h-[18.75rem] w-full object-cover"
 
-					/>
+					/> */}
 					<div className="container relative -translate-y-4">
 						<div className="font-display group hover:bg-accent absolute right-0 bottom-4 flex items-center rounded-lg bg-white py-2 px-4 text-sm">
 							<input
@@ -187,7 +187,7 @@ const Edit_user = () => {
 							<div className="flex space-x-5 md:w-1/2 md:pl-8">
 								<form className="shrink-0">
 									<figure className="relative inline-block">
-										<Image
+										<img
 											src={preview ? preview : ( userData ? userData.Photo : '/images/user/user_avatar.gif')}
 											alt="collection avatar"
 											className="dark:border-jacarta-600 rounded-xl border-[5px] border-white"
