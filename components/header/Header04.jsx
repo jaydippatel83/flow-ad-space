@@ -30,15 +30,15 @@ export default function Header04() {
     });
   }, []);
 
-  useEffect(() => {
-    const init = async () => {
-      if (user?.addr && userExist == false) {
-        await setupUser();
-      }
+  // useEffect(() => {
+  //   const init = async () => {
+  //     if (user?.addr && userExist == false) {
+  //       await setupUser();
+  //     }
 
-    };
-    init();
-  }, [user]);
+  //   };
+  //   init();
+  // }, [user]);
 
   // window resize
   useEffect(() => {

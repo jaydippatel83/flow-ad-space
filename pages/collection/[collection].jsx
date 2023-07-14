@@ -73,10 +73,9 @@ const Collection = () => {
        
       </div>
 
-      <Collection_items />
-      <div className="grid grid-cols-1 gap-[1.875rem] md:grid-cols-2 lg:grid-cols-4 mb-5">
-        { nftData && nftData.map((nft) => { 
-          console.log(nft,"nft");
+      {/* <Collection_items /> */}
+      <div className="grid grid-cols-1 gap-[1.875rem] md:grid-cols-2 lg:grid-cols-4 mb-52 mt-14">
+        { nftData && nftData.map((nft) => {  
           return (
             <article key={nft.id}>
               <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg">
@@ -109,6 +108,11 @@ const Collection = () => {
                       </span>
                     </a>
                   </Link>
+                 
+                </div>
+                <div className="mt-2 text-sm flex items-center justify-between">
+                  <span className="dark:text-jacarta-300">Rent Amount</span>
+                  &nbsp;&nbsp;
                   <span className="dark:border-jacarta-600 border-jacarta-100 flex items-center whitespace-nowrap rounded-md border py-1 px-2">
                     <span>
                       <img
@@ -118,13 +122,9 @@ const Collection = () => {
                         loading="lazy"
                       />
                     </span>
-                  </span>
-                </div>
-                <div className="mt-2 text-sm">
-                  <span className="dark:text-jacarta-300">Rent Amount</span>
-                  &nbsp;&nbsp;
-                  <span className="dark:text-jacarta-100 text-jacarta-700">
+                    <span className="dark:text-jacarta-100 text-jacarta-700">
                     {nft.Price}
+                  </span>
                   </span>
                 </div>
                 <div className="mt-8 flex items-center justify-between">
@@ -132,7 +132,7 @@ const Collection = () => {
                     className="text-accent font-display text-sm font-semibold"
                     onClick={async () => await rentNFTs(nft.nftId)}
                   >
-                    Rent
+                    Rent Item
                   </button>
                 </div>
               </div>
