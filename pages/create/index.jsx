@@ -44,6 +44,8 @@ const Create = () => {
   const cadenceContext = useContext(CadenceContext);
   const { createNFT } = cadenceContext;
 
+  const NFT_STORAGE_KEY = process.env.NEXT_APP_NFT_STORAGE_KEY;
+
   const handleChange = async (file) => {
     setLoading(true);
     const filename = file.name;
@@ -273,7 +275,7 @@ const Create = () => {
                 Preview NFT
               </label>
               <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg text-jacarta-500">
-                {console.log(file, "file")}
+              
                 <img
                   src={file ? file : "/images/products/item_1.jpg"}
                   alt={nftname}

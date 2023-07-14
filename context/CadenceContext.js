@@ -32,6 +32,8 @@ export const CadenceContextProvider = (props) => {
       ])
       .then(fcl.decode);
 
+    console.log(transactionId, "transactionId");
+
     return fcl.tx(transactionId).onceSealed();
   };
 
@@ -84,22 +86,26 @@ export const CadenceContextProvider = (props) => {
 
   const getNFTs = async () => {
     let account = user?.addr;
-    if (account) {
-      const result = await fcl
-        .send([
-          fcl.script(getSaleNFTsScript),
-          fcl.args([fcl.arg(account, t.Address)]),
-        ])
-        .then(fcl.decode);
+    try {
+      if (account) {
+        const result = await fcl
+          .send([
+            fcl.script(getSaleNFTsScript),
+            fcl.args([fcl.arg(account, t.Address)]),
+          ])
+          .then(fcl.decode);
 
-      var nfts = await Promise.all(
-        Object.keys(result).map(async (key) => {
-          let ipfs = await axios.get(result[key].nftRef.ipfsHash);
-          ipfs.data.id = result[key].nftRef.id;
-          return ipfs.data;
-        })
-      );
-      setNfts(nfts);
+        var nfts = await Promise.all(
+          Object.keys(result).map(async (key) => {
+            let ipfs = await axios.get(result[key].nftRef.ipfsHash);
+            ipfs.data.id = result[key].nftRef.id;
+            return ipfs.data;
+          })
+        );
+        setNfts(nfts);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -113,7 +119,6 @@ export const CadenceContextProvider = (props) => {
             fcl.args([fcl.arg(account, t.Address)]),
           ])
           .then(fcl.decode);
-
 
         var nfts = await Promise.all(
           Object.keys(result).map(async (key) => {
