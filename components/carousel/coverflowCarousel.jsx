@@ -5,8 +5,29 @@ import "swiper/css/navigation";
 import { coverflow_data } from "../../data/coverflow_data";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "../firebase";
 
 const CoverflowCarousel = () => {
+
+  const [userData,setUserData]= useState([]);
+
+  const getUsers= async()=>{
+    const arry =[];
+		const q = query(collection(db, "Users"));
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((fire) => { 
+			const id = fire.id;
+      arry.push({ ...fire.data(), id })  
+		})
+    setUserData(arry);
+  }
+
+  useEffect(()=>{
+    getUsers();
+  },[])
+
   return (
     <> 
       <div className="relative px-6 pb-16 sm:px-0"> 
@@ -42,25 +63,18 @@ const CoverflowCarousel = () => {
           }}
           className="swiper coverflow-slider !py-5"
         >
-          {coverflow_data.map((item) => {
-            const { img, id, authorImage, authorName, title } = item;
-            const itemLink = img
-              .split("/")
-              .slice(-1)
-              .toString()
-              .replace(".jpg", "")
-              .replace(".gif", "")
-              .replace("_lg", "");
+          {userData &&  userData.map((user) => {
+            const {UserName, Photo, Cover,CreatedAt, id}= user; 
             return (
               <SwiperSlide key={id}>
                 <article>
                   <div className="block overflow-hidden rounded-2.5xl bg-white shadow-md transition-shadow hover:shadow-lg dark:bg-jacarta-700">
                     <figure className="relative">
-                      <Link href={"/item/" + itemLink}>
+                      <Link href={"/user/" + id}>
                         <a>
                           <Image
-                            src={img}
-                            alt={title}
+                            src={Cover ? Cover : Photo}
+                            alt={UserName}
                             className="swiper-lazy h-[430px] w-full object-cover"
                             height="430"
                             width="379"
@@ -70,25 +84,25 @@ const CoverflowCarousel = () => {
                     </figure>
                     <div className="p-6">
                       <div className="flex">
-                        <Link href="/user/avatar_6">
+                        <Link href={"/user/" + id}>
                           <a className="shrink-0">
                             <img
-                              src={authorImage}
+                              src={Photo}
                               alt="avatar"
                               className="mr-4 h-10 w-10 rounded-full"
                             />
                           </a>
                         </Link>
                         <div>
-                          <Link href={"/item/" + itemLink}>
+                          <Link href={"/user/" + id}>
                             <a className="block">
                               <span className="font-display text-lg leading-none text-jacarta-700 hover:text-accent dark:text-white">
-                                {title}
+                                {UserName}
                               </span>
                             </a>
                           </Link>
-                          <Link href="/user/avatar_6">
-                            <a className="text-2xs text-accent">{authorName}</a>
+                          <Link href={"/user/" + id}>
+                            <a className="text-2xs text-accent">{UserName}</a>
                           </Link>
                         </div>
                       </div>

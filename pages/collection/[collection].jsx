@@ -10,6 +10,8 @@ import Head from "next/head";
 import Meta from "../../components/Meta";
 import { CadenceContext } from "../../context/CadenceContext";
 import { AuthContext } from "../../context/AuthConext";
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "../../components/firebase";
 
 const Collection = () => {
   const [likesImage, setLikesImage] = useState(false);
@@ -27,6 +29,25 @@ const Collection = () => {
     init();
   }, [user]);
 
+
+  const [nftData,setNftData]=useState([])
+  
+	useEffect(()=>{
+		getNftData();
+	},[])
+
+
+	async function getNftData() {
+    const arry =[];
+		const q = query(collection(db, "CreateNFTs"));
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((fire) => { 
+			const id = fire.id;
+      arry.push({ ...fire.data(), id })  
+		})
+    setNftData(arry);
+	}
+
   const handleLikes = () => {
     if (!likesImage) {
       setLikesImage(true);
@@ -34,6 +55,7 @@ const Collection = () => {
       setLikesImage(false);
     }
   };
+ 
 
   return (
     <>
@@ -48,31 +70,25 @@ const Collection = () => {
             objectFit="cover"
           />
         </div>
-        {/* <!-- end banner --> */}
-
-        {/* <!-- Profile --> */}
-
-        {/* <!-- end profile --> */}
+       
       </div>
 
-      {/* <Collection_items /> */}
-      <div className="grid grid-cols-1 gap-[1.875rem] md:grid-cols-2 lg:grid-cols-4">
-        {nfts.map((nft) => {
+      <Collection_items />
+      <div className="grid grid-cols-1 gap-[1.875rem] md:grid-cols-2 lg:grid-cols-4 mb-5">
+        { nftData && nftData.map((nft) => { 
+          console.log(nft,"nft");
           return (
             <article key={nft.id}>
               <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg">
                 <div className="mb-4 flex items-center justify-between relative">
                   {/* auction dropdown */}
-                  <Auctions_dropdown classes="dark:hover:bg-jacarta-600 dropdown hover:bg-jacarta-100 rounded-full " />
+                  {/* <Auctions_dropdown classes="dark:hover:bg-jacarta-600 dropdown hover:bg-jacarta-100 rounded-full " /> */}
                 </div>
                 <figure className="relative">
-                  <Link href={/item/ + ""}>
+                  <Link href={/item/ + nft.id}>
                     <a>
                       <img
-                        src={nft.image.replace(
-                          "ipfs://",
-                          "https://nftstorage.link/ipfs/"
-                        )}
+                        src={nft.Photo}
                         alt="item 8"
                         className="w-full rounded-[0.625rem]"
                         loading="lazy"
@@ -86,10 +102,10 @@ const Collection = () => {
                   {/* <Countdown_timer time={+auction_timer} /> */}
                 </figure>
                 <div className="mt-7 flex items-center justify-between">
-                  <Link href={/item/ + ""}>
+                  <Link href={/item/ + nft.id}>
                     <a>
                       <span className="font-display text-jacarta-700 hover:text-accent text-base dark:text-white">
-                        {nft.name}
+                        {nft.Nftname}
                       </span>
                     </a>
                   </Link>
@@ -114,7 +130,7 @@ const Collection = () => {
                 <div className="mt-8 flex items-center justify-between">
                   <button
                     className="text-accent font-display text-sm font-semibold"
-                    onClick={async () => await rentNFTs(nft.id)}
+                    onClick={async () => await rentNFTs(nft.nftId)}
                   >
                     Rent
                   </button>

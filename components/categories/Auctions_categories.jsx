@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeadLine from "../headLine";
 import Auctions_category_data from "../../data/auctions_category_data";
 import Tippy from "@tippyjs/react";
@@ -11,20 +11,38 @@ import "tippy.js/themes/light.css";
 import Image from "next/image";
 import auctions_category_data from "../../data/auctions_category_data";
 import Likes from "../likes";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../firebase"; 
+
 
 const Auctions_categories = () => {
   const dispatch = useDispatch();
-  const [data, setData] = useState(Auctions_category_data.slice(0, 8));
+  const [data, setData] = useState([]);
   const [loadMoreBtn, setLoadMoreBtn] = useState(true);
 
   const handleloadMore = () => {
-    setData(auctions_category_data);
-    setLoadMoreBtn(false);
+
   };
+
+  const getExploreData = async () => {
+    const arry = [];
+    const q = query(collection(db, "CreateNFTs"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async(fire) => {
+      const id = fire.id; 
+      arry.push({ ...fire.data(), id });
+    })
+    setData(arry);
+  }
+
+  useEffect(() => {
+    getExploreData();
+  }, [])
+
   return (
     <div>
       <section className="py-24 relative">
-      <picture className="pointer-events-none absolute inset-0 -z-10 dark:hidden">
+        <picture className="pointer-events-none absolute inset-0 -z-10 dark:hidden">
           <img
             src="/images/gradient_light.jpg"
             alt="gradient"
@@ -38,40 +56,37 @@ const Auctions_categories = () => {
             classes="font-display text-jacarta-700 mb-8 text-center text-3xl dark:text-white"
           />
           <div className="grid grid-cols-1 gap-[1.875rem] md:grid-cols-2 lg:grid-cols-4">
-            {data.map((item) => {
+            {data && data.map((item) => {
+              console.log(item, "item");
               const {
                 id,
-                bigImage,
-                creatorImage,
-                ownerImage,
-                title,
-                price,
-                likes,
-                auction_timer,
+                Creator,
+                Description,
+                EndDate,
+                StartDate,
+                Nftname,
+                Photo,
+                Price,
+                nftId
               } = item;
-              const itemLink = bigImage
-                .split("/")
-                .slice(-1)
-                .toString()
-                .replace(".jpg", "")
-                .replace(".gif", "");
               return (
                 <article key={id}>
                   <div className="dark:bg-jacarta-700 dark:border-jacarta-700 border-jacarta-100 rounded-2xl block border bg-white p-[1.1875rem] transition-shadow hover:shadow-lg">
                     <div className="mb-4 flex items-center justify-between relative">
-                      <div className="flex -space-x-2 ">
+
+                      <div className="flex flex-space-x-2 ">
                         <Tippy
                           theme="tomato"
                           content={
                             <span className="py-1 px-2 block">
-                              Creator: Sussygirl
+                              Creator
                             </span>
                           }
                         >
-                          <Link href={/item/ + itemLink}>
+                          <Link href={/user/ + id}>
                             <a>
-                              <Image
-                                src={creatorImage}
+                              <img
+                                src={Photo}
                                 alt="creator"
                                 className="h-6 w-6 rounded-full"
                                 height={24}
@@ -83,67 +98,53 @@ const Auctions_categories = () => {
                         <Tippy
                           content={
                             <span className="py-1 px-2 block">
-                              Owner: Sussygirl
+                              Owner:
                             </span>
                           }
                         >
-                          <Link href={/item/ + itemLink}>
-                            <a>
-                              <Image
-                                src={ownerImage}
-                                alt="creator"
-                                className="h-6 w-6 rounded-full"
-                                height={24}
-                                width={24}
-                              />
-                            </a>
-                          </Link>
                         </Tippy>
                       </div>
-
                       {/* auction dropdown */}
                       <Auctions_dropdown classes="dark:hover:bg-jacarta-600 dropdown hover:bg-jacarta-100 rounded-full " />
                     </div>
                     <figure className="relative">
-                      <Link href={/item/ + itemLink}>
+                      <Link href={/item/ + id}>
                         <a>
-                          <Image
-                            src={bigImage}
+                          <img
+                            src={Photo}
                             alt="item 8"
                             className="w-full rounded-[0.625rem]"
                             loading="lazy"
                             height="100%"
                             width="100%"
-                            layout="responsive"
-                            objectFit="cover"
                           />
                         </a>
                       </Link>
-                      <Countdown_timer time={+auction_timer} />
+                      <Countdown_timer time={+StartDate.seconds} />
                     </figure>
                     <div className="mt-7 flex items-center justify-between">
-                      <Link href={/item/ + itemLink}>
+                      <Link href={/item/ + id}>
                         <a>
                           <span className="font-display text-jacarta-700 hover:text-accent text-base dark:text-white">
-                            {title}
+                            {Nftname}
                           </span>
                         </a>
                       </Link>
                       <span className="dark:border-jacarta-600 border-jacarta-100 flex items-center whitespace-nowrap rounded-md border py-1 px-2">
                         <span>
-                        <img
-																	src="/images/chains/fl.png"
-																	alt="avatar"
-																	className="rounded-2lg mr-1 h-4 w-4"
-																	loading="lazy"
-																/>
+                          <img
+                            src="/images/chains/fl.png"
+                            alt="avatar"
+                            className="rounded-2lg mr-1 h-4 w-4"
+                            loading="lazy"
+                          />
                         </span>
                       </span>
                     </div>
                     <div className="mt-2 text-sm">
                       <span className="dark:text-jacarta-300">Highest Bid</span>
                       <span className="dark:text-jacarta-100 text-jacarta-700">
-                        {price}
+                        {Price}
                       </span>
                     </div>
 
@@ -156,7 +157,7 @@ const Auctions_categories = () => {
                       </button>
 
                       <Likes
-                        like={likes}
+                        like={21}
                         classes="flex items-center space-x-1"
                       />
                     </div>
