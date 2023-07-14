@@ -18,24 +18,24 @@ const Collection_category_filter = () => {
 		target.classList.toggle('show-accordion');
 	};
 
-	const sortText = [
-		{
-			id: 1,
-			text: 'Recently Added',
-		},
-		{
-			id: 2,
-			text: 'Price: Low to High',
-		},
-		{
-			id: 3,
-			text: 'Price: high to low',
-		},
-		{
-			id: 4,
-			text: 'Auction Ending Soon',
-		},
-	];
+		const sortText = [
+			{
+				id: 1,
+				text: 'Recently Added',
+			},
+			{
+				id: 2,
+				text: 'Price: Low to High',
+			},
+			{
+				id: 3,
+				text: 'Price: high to low',
+			},
+			{
+				id: 4,
+				text: 'Auction Ending Soon',
+			},
+		];
 	const blockchainText = [
 		{
 			id: 1,

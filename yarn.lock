@@ -4126,7 +4126,14 @@
   "resolved" "https://registry.npmjs.org/@mui/core-downloads-tracker/-/core-downloads-tracker-5.13.4.tgz"
   "version" "5.13.4"
 
-"@mui/material@^5.8.6", "@mui/material@^5.8.7":
+"@mui/icons-material@^5.14.0":
+  "integrity" "sha512-z7lYNteDi1GMkF9JP/m2RWuCYK1M/FlaeBSUK7/IhIYzIXNhAVjfD8jRq5vFBV31qkEi2aGBS2z5SfLXwH6U0A=="
+  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.14.0.tgz"
+  "version" "5.14.0"
+  dependencies:
+    "@babel/runtime" "^7.22.5"
+
+"@mui/material@^5.0.0", "@mui/material@^5.8.6", "@mui/material@^5.8.7":
   "integrity" "sha512-Yq+4f1KLPa/Szd3xqra2hbOAf2Usl8GbubncArM6LIp40mBLtXIdPE29MNtHsbtuzz4g+eidrETgoi3wdbEYfQ=="
   "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.13.4.tgz"
   "version" "5.13.4"
@@ -9519,6 +9526,14 @@
   "version" "6.4.0"
   dependencies:
     "is-wsl" "^1.1.0"
+
+"openai@^3.3.0":
+  "integrity" "sha512-uqxI/Au+aPRnsaQRe8CojU0eCR7I0mBiKjD3sNMzY6DaC1ZVrc85u98mtJW6voDug8fgGN+DIZmTDxTthxb7dQ=="
+  "resolved" "https://registry.npmjs.org/openai/-/openai-3.3.0.tgz"
+  "version" "3.3.0"
+  dependencies:
+    "axios" "^0.26.0"
+    "form-data" "^4.0.0"
 
 "optionator@^0.9.1":
   "integrity" "sha512-74RlY5FCnhq4jRxVUPKDaRwrVNXMqsGsiW6AJw4XK8hmtm10wC0ypZBLw5IIp85NZMr91+qd1RvvENwg7jjRFw=="

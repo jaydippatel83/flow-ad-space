@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import HeadLine from "../headLine";
 import Auctions_category_data from "../../data/auctions_category_data";
 import Tippy from "@tippyjs/react";
@@ -13,12 +13,16 @@ import auctions_category_data from "../../data/auctions_category_data";
 import Likes from "../likes";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase"; 
+import { CadenceContext } from "../../context/CadenceContext";
 
 
 const Auctions_categories = () => {
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [loadMoreBtn, setLoadMoreBtn] = useState(true);
+
+  const cadenceContext = useContext(CadenceContext);
+  const { rentNFTs, rentLoading } = cadenceContext;
 
   const handleloadMore = () => {
 
@@ -142,7 +146,7 @@ const Auctions_categories = () => {
                       </span>
                     </div>
                     <div className="mt-2 text-sm">
-                      <span className="dark:text-jacarta-300">Highest Bid</span>
+                      <span className="dark:text-jacarta-300">Rent&nbsp;</span>
                       <span className="dark:text-jacarta-100 text-jacarta-700">
                         {Price}
                       </span>
@@ -151,9 +155,10 @@ const Auctions_categories = () => {
                     <div className="mt-8 flex items-center justify-between">
                       <button
                         className="text-accent font-display text-sm font-semibold"
-                        onClick={() => dispatch(bidsModalShow())}
+                        onClick={() => rentNFTs(nftId)}
+                      
                       >
-                        Place bid
+                    Rent
                       </button>
 
                       <Likes

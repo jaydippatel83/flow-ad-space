@@ -19,6 +19,7 @@ export const CadenceContextProvider = (props) => {
 
   const [nfts, setNfts] = useState([]);
   const [myNFTs, setMyNFTs] = useState([]);
+  const [rentLoading, setRentLoading] = useState(false);
 
   const setupUser = async () => {
     const transactionId = await fcl
@@ -135,6 +136,8 @@ export const CadenceContextProvider = (props) => {
   };
 
   const rentNFTs = async (id) => {
+    console.log(id,"id")
+    setRentLoading(true);
     let address = user?.addr;
     let Id = parseInt(id);
     console.log(id, "iddd");
@@ -148,7 +151,7 @@ export const CadenceContextProvider = (props) => {
         fcl.limit(9999),
       ])
       .then(fcl.decode);
-
+    setRentLoading(false);
     console.log(transactionId);
     return fcl.tx(transactionId).onceSealed();
   };
@@ -163,6 +166,7 @@ export const CadenceContextProvider = (props) => {
         rentNFTs,
         getMyNFTS,
         myNFTs,
+        rentLoading
       }}
       {...props}
     >
