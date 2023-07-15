@@ -116,7 +116,7 @@ export default function Header04() {
               </div>
             </a> */}
             <h4 className=" font-display text-2xl text-jacarta-700 dark:text-white lg:text-3xl xl:text-4xl">
-              <span className="animate-gradient">FANs</span>
+              <span className="dark:text-white text-jacarta-700">FANs</span>
             </h4>
           </Link>
 
