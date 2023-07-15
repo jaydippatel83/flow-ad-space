@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { items_data } from '../../data/items_data';
 import Auctions_dropdown from '../../components/dropdown/Auctions_dropdown';
@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { bidsModalShow } from '../../redux/counterSlice';
 import { doc, getDoc, where } from 'firebase/firestore';
 import { db } from '../../components/firebase';
+import { CadenceContext } from "../../context/CadenceContext";
 
 const Item = () => {
 	const dispatch = useDispatch();
@@ -22,6 +23,9 @@ const Item = () => {
 	const [userData, setUserData] = useState();
 
 	const [imageModal, setImageModal] = useState(false);
+
+	const cadenceContext = useContext(CadenceContext);
+	const { rentNFTs, rentLoading } = cadenceContext;
 
 	const getDetails = async () => {
 		const docRef = doc(db, "CreateNFTs", pid);
@@ -128,10 +132,10 @@ const Item = () => {
 									</span>
 								</div>
 								<span className="dark:text-jacarta-300 text-jacarta-400 text-sm">
-									Highest bid
+									Rent Amount
 								</span>
 								<span className="dark:text-jacarta-300 text-jacarta-400 text-sm">
-									1/1 available
+							
 								</span>
 							</div>
 
@@ -145,7 +149,7 @@ const Item = () => {
 									<div className="sm:w-1/2 sm:pr-4 lg:pr-8">
 										<div className="block overflow-hidden text-ellipsis whitespace-nowrap">
 											<span className="dark:text-jacarta-300 text-jacarta-400 text-sm">
-												Highest bid by{' '}
+												On Rent by{' '}
 											</span>
 											<Link href="/user/avatar_6">
 												<a className="text-accent text-sm font-bold">
@@ -157,8 +161,9 @@ const Item = () => {
 											<figure className="mr-4 shrink-0">
 												<Link href="#">
 													<a className="relative block">
+														
 														<img
-															src="/images/avatars/avatar_4.jpg"
+															src={userData?.Photo}
 															alt="avatar"
 															className="rounded-2lg h-12 w-12"
 															loading="lazy"
@@ -186,7 +191,7 @@ const Item = () => {
 									{/* <!-- Countdown --> */}
 									<div className="dark:border-jacarta-600 sm:border-jacarta-100 mt-4 sm:mt-0 sm:w-1/2 sm:border-l sm:pl-4 lg:pl-8">
 										<span className="js-countdown-ends-label text-jacarta-400 dark:text-jacarta-300 text-sm">
-											Auction ends in
+											Rent ends in
 										</span>
 										<Items_Countdown_timer time={+userData && userData.EndDate} />
 									</div>
@@ -195,9 +200,10 @@ const Item = () => {
 								<Link href="#">
 									<button
 										className="bg-accent shadow-accent-volume hover:bg-accent-dark inline-block w-full rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
-										onClick={() => dispatch(bidsModalShow())}
+										onClick={() => rentNFTs(userData.nftId)}
+										disabled={rentLoading}
 									>
-										Place Bid
+										{rentLoading ? "Renting..." : "Rent"}
 									</button>
 								</Link>
 							</div>
