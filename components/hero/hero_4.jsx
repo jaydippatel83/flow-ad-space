@@ -6,7 +6,7 @@ const Hero_4 = () => {
 
   const handleSearch = () => {
     console.log(search);
-  }
+  };
   return (
     <>
       <section className="hero relative py-20 md:pt-32">
@@ -28,8 +28,7 @@ const Hero_4 = () => {
         <div className="container">
           <div className="mx-auto max-w-2xl pt-24 text-center">
             <h1 className="mb-10 font-display text-5xl text-jacarta-700 dark:text-white lg:text-6xl xl:text-7xl">
-              Discover, Collect & Sell Creative NFTs
-      
+              Discover, popular Ad spaces in flow ecosystem
             </h1>
             {/* <!-- Search --> */}
             <div className="relative mb-4">
@@ -37,7 +36,7 @@ const Hero_4 = () => {
                 onChange={(e) => setSearch(e.target.value)}
                 type="search"
                 className="w-full rounded-lg border border-jacarta-100 py-4 px-4 pl-10 text-md text-jacarta-700 placeholder-jacarta-300 focus:ring-accent dark:border-transparent dark:bg-white/[.15] dark:text-white dark:placeholder-white"
-                placeholder="Search by Collection, NFT or user"
+                placeholder="Search by Ad, Place or user"
               />
               <span className="absolute left-0 top-0 flex h-full w-12 items-center justify-center rounded-lg">
                 <svg
@@ -51,27 +50,13 @@ const Hero_4 = () => {
                   <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
                 </svg>
               </span>
-              <button onClick={handleSearch} className="absolute right-0 top-0 h-full w-12 items-center justify-center rounded-r-lg bg-accent-dark pr-20 pl-10 text-white">Search</button>
+              <button
+                onClick={handleSearch}
+                className="absolute right-0 top-0 h-full w-12 items-center justify-center rounded-r-lg bg-accent-dark pr-20 pl-10 text-white"
+              >
+                Search
+              </button>
             </div>
-
-            <span className="dark:text-jacarta-300 text-accent">
-              Popular searches:
-            </span>
-            <Link href="#">
-              <a className="text-accent hover:text-jacarta-700 dark:hover:text-white">
-                cryptopunks,
-              </a>
-            </Link>
-            <Link href="#">
-              <a className="text-accent hover:text-jacarta-700 dark:hover:text-white">
-                bored ape yacht club,
-              </a>
-            </Link>
-            <Link href="#">
-              <a className="text-accent hover:text-jacarta-700 dark:hover:text-white">
-                moonbirds
-              </a>
-            </Link>
           </div>
         </div>
       </section>

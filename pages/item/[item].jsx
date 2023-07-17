@@ -189,12 +189,12 @@ const Item = () => {
 									</div>
 
 									{/* <!-- Countdown --> */}
-									<div className="dark:border-jacarta-600 sm:border-jacarta-100 mt-4 sm:mt-0 sm:w-1/2 sm:border-l sm:pl-4 lg:pl-8">
+									{/* <div className="dark:border-jacarta-600 sm:border-jacarta-100 mt-4 sm:mt-0 sm:w-1/2 sm:border-l sm:pl-4 lg:pl-8">
 										<span className="js-countdown-ends-label text-jacarta-400 dark:text-jacarta-300 text-sm">
 											Rent ends in
 										</span>
 										<Items_Countdown_timer time={+userData && userData.EndDate} />
-									</div>
+									</div> */}
 								</div>
 
 								<Link href="#">
