@@ -33,7 +33,7 @@
 
 <img width="1433" alt="Screenshot 2023-07-17 at 9 56 55 AM" src="https://github.com/jaydippatel83/flow-ad-space/assets/54347081/a241b0f2-40b2-4971-b2fe-90e67a0af2a4">
 
-**3) Ask AI:** 
+**2) Ask AI:** 
 
 <img width="1428" alt="Screenshot 2023-07-17 at 9 57 44 AM" src="https://github.com/jaydippatel83/flow-ad-space/assets/54347081/ff187951-89e8-4c93-bea0-ced6d6fd0978">
 
